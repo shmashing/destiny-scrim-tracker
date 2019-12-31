@@ -1,0 +1,8 @@
+# rider IDE
+.idea
+
+# CSharp Binaries
+bin/
+lib/
+obj/
+
