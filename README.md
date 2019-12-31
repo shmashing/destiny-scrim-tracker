@@ -28,7 +28,7 @@ The following snippets are provided for illustrative purposes only and the tests
 
 To build the service locally, from the root of the repository, run `dotnet build`.
 
-To run the service locally, from the root of the repository, run `dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.cspro`'
+To run the service locally, from the root of the repository, run `dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.cspro`
 
 ##### Starting the Service Locally in Docker 
 
@@ -57,4 +57,3 @@ To run the migration, execute the console app with the following command:
 ## Contributing
 
 Feature branches should have pull requests opened between themselves and the `master` branch when ready for submission, with relevant stakeholders added as reviewers. PRs may be merged to `master` upon a single approval. As a general rule of thumb, it is generally prudent to wait for successful builds from the PR before merging it.
-
