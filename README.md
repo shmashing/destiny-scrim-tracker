@@ -28,7 +28,7 @@ The following snippets are provided for illustrative purposes only and the tests
 
 To build the service locally, from the root of the repository, run `dotnet build`.
 
-To run the service locally, from the root of the repository, run `dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.cspro`
+To run the service locally, from the root of the repository, run `dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.csproj`
 
 ##### Starting the Service Locally in Docker 
 
