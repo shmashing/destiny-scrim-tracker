@@ -1,5 +1,5 @@
 # Destiny Scrims Tracker #
-Version 1.0.0
+Version 0.0.1
 
 Does you and your clan run a lot of private match scrimmages? Do you have a hard time trying to match up teams to be as fair as possible and still be a good fight?! Well then this is the tool for you! Destiny Scrims Tracker is a web interface to manage all of your internal clan scrimmaging and ranking! With this, all you need to do is input the results of a game and it will calculate a ELO system specific to your clan!
 
@@ -28,7 +28,7 @@ The following snippets are provided for illustrative purposes only and the tests
 
 To build the service locally, from the root of the repository, run `dotnet build`.
 
-To run the service locally, from the root of the repository, run 'dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.csproj'
+To run the service locally, from the root of the repository, run `dotnet run --project Destiny.ScrimsTracker.Api/Destiny.ScrimsTracker.Api.cspro`'
 
 ##### Starting the Service Locally in Docker 
 
@@ -57,5 +57,4 @@ To run the migration, execute the console app with the following command:
 ## Contributing
 
 Feature branches should have pull requests opened between themselves and the `master` branch when ready for submission, with relevant stakeholders added as reviewers. PRs may be merged to `master` upon a single approval. As a general rule of thumb, it is generally prudent to wait for successful builds from the PR before merging it.
-
 
