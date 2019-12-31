@@ -54,6 +54,6 @@ To run the migration, execute the console app with the following command:
 
 ## Contributing
 
-Feature branches should have pull requests opened between themselves and the `master` branch when ready for submission, with relevant stakeholders added as reviewers. PRs may be merged to `develop` upon a single approval. As a general rule of thumb, it is generally prudent to wait for successful builds from the initial PR before opening and/or merging the final PR.
+Feature branches should have pull requests opened between themselves and the `master` branch when ready for submission, with relevant stakeholders added as reviewers. PRs may be merged to `master` upon a single approval. As a general rule of thumb, it is generally prudent to wait for successful builds from the initial PR before opening and/or merging the final PR.
 
 
