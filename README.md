@@ -1,5 +1,5 @@
 # Destiny Scrims Tracker #
-Version 1.0.0
+Version 0.0.1
 
 Does you and your clan run a lot of private match scrimmages? Do you have a hard time trying to match up teams to be as fair as possible and still be a good fight?! Well then this is the tool for you! Destiny Scrims Tracker is a web interface to manage all of your internal clan scrimmaging and ranking! With this, all you need to do is input the results of a game and it will calculate a ELO system specific to your clan!
 
