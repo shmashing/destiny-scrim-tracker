@@ -4,6 +4,6 @@ namespace Destiny.ScrimTracker.Logic.Models
     {
         public string GamerTag { get; set; }
         public int Elo { get; set; }
-        public int AverageEfficiency { get; set; }
+        public double AverageEfficiency { get; set; }
     }
 }
