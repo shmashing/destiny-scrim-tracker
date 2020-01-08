@@ -14,6 +14,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
     {
         string CreateGuardian(Guardian guardian);
         IEnumerable<Guardian> GetAllGuardians();
+        Guardian GetGuardian(string guardianId);
         Guardian UpdateGuardianStats(Guardian updatedGuardian);
         string DeleteGuardian(string guardianId);
     }
@@ -44,6 +45,15 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             {
                 var guardians =  context.Guardians.ToList();
                 return guardians;
+            }
+        }
+
+        public Guardian GetGuardian(string guardianId)
+        {
+            using (var context = _guardianContext)
+            {
+                var guardian = context.Guardians.FirstOrDefault(guardian => guardian.Id == guardianId);
+                return guardian;
             }
         }
 

@@ -9,6 +9,7 @@ namespace Destiny.ScrimTracker.Logic.Services
     {
         string CreateGuardian(Guardian guardian);
         IEnumerable<Guardian> GetGuardians();
+        Guardian GetGuardian(string guardianId);
         Guardian UpdateGuardian(Guardian updatedGuardian);
         string DeleteGuardian(string guardianId);
     }
@@ -30,6 +31,11 @@ namespace Destiny.ScrimTracker.Logic.Services
         public IEnumerable<Guardian> GetGuardians()
         {
             return _guardianRepository.GetAllGuardians();
+        }
+
+        public Guardian GetGuardian(string guardianId)
+        {
+            return _guardianRepository.GetGuardian(guardianId);
         }
 
         public Guardian UpdateGuardian(Guardian updatedGuardian)

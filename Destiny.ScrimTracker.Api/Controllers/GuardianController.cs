@@ -30,6 +30,12 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return _guardianService.GetGuardians();
         }
 
+        [HttpGet("{guardianId}")]
+        public Guardian GetGuardian(string guardianId)
+        {
+            return _guardianService.GetGuardian(guardianId);
+        }
+
         [HttpPost]
         public string Post(CreateGuardianRequest request)
         {
