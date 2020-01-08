@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Destiny.ScrimTracker.Logic.Adapters;
+using Destiny.ScrimTracker.Logic.Repositories;
+using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +29,17 @@ namespace Destiny.ScrimTracker.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register Third Party 
+            
+            // Register Adapters
+            services.AddDbContext<GuardianContext>(options => options.UseNpgsql(Configuration.GetConnectionString("GuardianDatabase"), b=> b.MigrationsAssembly("Destiny.ScrimTracker.Api")));
+            
+            // Register Repositories
+            services.AddTransient<IGuardianRepository, GuardianRepository>();
+            
+            // Register Services
+            services.AddTransient<IGuardianService, GuardianService>();
+            
             services.AddControllers();
         }
 
@@ -35,9 +50,7 @@ namespace Destiny.ScrimTracker.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
