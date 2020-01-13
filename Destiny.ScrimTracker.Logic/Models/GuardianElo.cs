@@ -1,13 +1,16 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Destiny.ScrimTracker.Logic.Models
 {
+    [Table("guardian_elos", Schema = "scrims_tracker")]
     public class GuardianElo
     {
-        public Guid Id { get; set; }
-        public int MatchId { get; set; }
-        public int GuardianId { get; set; }
-        public int PreviousElo { get; set; }
-        public int NewElo { get; set; }
+        public string Id { get; set; }
+        public string? MatchId { get; set; }
+        public string GuardianId { get; set; }
+        public double PreviousElo { get; set; }
+        public double NewElo { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }

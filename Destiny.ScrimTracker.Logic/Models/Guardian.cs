@@ -14,5 +14,6 @@ namespace Destiny.ScrimTracker.Logic.Models
         public string GamerTag { get; set; }
         public int LifetimeKills { get; set; }
         public int LifetimeDeaths { get; set; }
+        public EloModifier EloModifier { get; set; }
     }
 }
