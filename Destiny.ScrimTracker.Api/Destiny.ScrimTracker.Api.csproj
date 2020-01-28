@@ -8,6 +8,10 @@
     <ProjectReference Include="..\Destiny.ScrimTracker.Logic\Destiny.ScrimTracker.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+  </ItemGroup>
+
   <Target Name="PrePublishTarget" AfterTargets="Publish">
     <Exec Command="dotnet ef database update" />
   </Target>
