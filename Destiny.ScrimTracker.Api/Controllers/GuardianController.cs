@@ -13,7 +13,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GuardianController : ControllerBase
+    public class GuardianController : Controller
     {
         private readonly IGuardianService _guardianService;
         private readonly ILogger<GuardianController> _logger;
@@ -25,15 +25,22 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Guardian> Get()
+        public IActionResult Get()
         {
-            return _guardianService.GetGuardians();
+            var guardianSnapshots = _guardianService.GetGuardians();
+            return View(guardianSnapshots);
         }
 
         [HttpGet("{guardianId}")]
-        public Guardian GetGuardian(string guardianId)
+        public GuardianResponse GetGuardian(string guardianId)
         {
-            return _guardianService.GetGuardian(guardianId);
+            var guardian = _guardianService.GetGuardian(guardianId);
+            var guardianElo = _guardianService.GetGuardianElo(guardianId);
+            return new GuardianResponse()
+            {
+                Guardian = guardian,
+                GuardianElo = guardianElo
+            };
         }
 
         [HttpPost]

@@ -15,86 +15,121 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         string CreateGuardian(Guardian guardian);
         IEnumerable<Guardian> GetAllGuardians();
         Guardian GetGuardian(string guardianId);
+        string GetGuardianId(string gamerTag);
         Guardian UpdateGuardianStats(Guardian updatedGuardian);
+        Guardian UpdateGuardianStats(string guardianId, int kills, int deaths);
+        Guardian UpdateGuardianEloModifier(string guardianId, EloModifier newModifier);
         string DeleteGuardian(string guardianId);
+        void CalculateGuardianElo(Guardian guardian, bool isWinner);
     }
     
     public class GuardianRepository : IGuardianRepository
     {
-        private readonly GuardianContext _guardianContext;
+        private readonly DatabaseContext _databaseContext;
 
-        public GuardianRepository(GuardianContext guardianContext)
+        public GuardianRepository(DatabaseContext databaseContext)
         {
-            _guardianContext = guardianContext;
+            _databaseContext = databaseContext;
         }
 
         public string CreateGuardian(Guardian guardian)
         {
-            using (var context = _guardianContext)
-            {
-                context.Add(guardian);
-                context.SaveChanges();
-            }
+            _databaseContext.Add(guardian);
+            _databaseContext.SaveChanges();
 
             return guardian.Id;
         }
 
         public IEnumerable<Guardian> GetAllGuardians()
         {
-            using (var context = _guardianContext)
-            {
-                var guardians =  context.Guardians.ToList();
-                return guardians;
-            }
+            
+            var guardians =  _databaseContext.Guardians.ToList();
+            return guardians;
+            
         }
 
         public Guardian GetGuardian(string guardianId)
         {
-            using (var context = _guardianContext)
-            {
-                var guardian = context.Guardians.FirstOrDefault(guardian => guardian.Id == guardianId);
-                return guardian;
-            }
+
+            var guardian = _databaseContext.Guardians.FirstOrDefault(guardian => guardian.Id == guardianId);
+            return guardian;
+            
+        }
+
+        public string GetGuardianId(string gamerTag)
+        {
+            var guardianId = _databaseContext.Guardians.FirstOrDefault(g => g.GamerTag == gamerTag).Id;
+            return guardianId;
         }
 
         public Guardian UpdateGuardianStats(Guardian updatedGuardian)
         {
-            Guardian guardian;
-            using (var context = _guardianContext)
-            {
-                guardian = context.Guardians.FirstOrDefault(g => g.Id == updatedGuardian.Id);
+            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == updatedGuardian.Id);
 
-                if (guardian == null)
-                {
-                    Console.WriteLine($"Record Not Found with Id {updatedGuardian.Id}");
-                }
-                
-                guardian.LifetimeDeaths += updatedGuardian.LifetimeDeaths;
-                guardian.LifetimeKills += updatedGuardian.LifetimeKills;
-                
-                context.Update(guardian);
-                context.SaveChanges();
+            if (guardian == null)
+            {
+                Console.WriteLine($"Record Not Found with Id {updatedGuardian.Id}");
             }
+                
+            guardian.LifetimeDeaths += updatedGuardian.LifetimeDeaths;
+            guardian.LifetimeKills += updatedGuardian.LifetimeKills;
+                
+            _databaseContext.Update(guardian);
+            _databaseContext.SaveChanges();
+            
+            return guardian;
+        }
+
+        public Guardian UpdateGuardianStats(string guardianId, int kills, int deaths)
+        {
+            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+
+            guardian.LifetimeDeaths += deaths;
+            guardian.LifetimeKills += kills;
+
+            var matchCount = _databaseContext.GuardianMatchResults.Count(res => res.GuardianId == guardianId);
+
+            if (matchCount >= 30 && guardian.EloModifier == EloModifier.NewGuardian)
+            {
+                guardian.EloModifier = EloModifier.EstablishedGuardian;
+            }
+
+            _databaseContext.Update(guardian);
+            _databaseContext.SaveChanges();
+
+            return guardian;
+        }
+
+        public Guardian UpdateGuardianEloModifier(string guardianId, EloModifier newModifier)
+        {
+            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+
+            guardian.EloModifier = newModifier;
+
+            _databaseContext.Update(guardian);
+            _databaseContext.SaveChanges();
 
             return guardian;
         }
 
         public string DeleteGuardian(string guardianId)
         {
-            using (var context = _guardianContext)
+            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+
+            if (guardian == null)
             {
-                var guardian = context.Guardians.FirstOrDefault(g => g.Id == guardianId);
-
-                if (guardian == null)
-                {
-                    return "Record not found";
-                }
-
-                context.Remove(guardian);
-                context.SaveChanges();
+                return "Record not found";
             }
 
+            _databaseContext.Remove(guardian);
+            _databaseContext.SaveChanges();
+
             return guardianId;
+        }
+
+        public void CalculateGuardianElo(Guardian guardian, bool isWinner)
+        {
+            throw new NotImplementedException();
         }
     }
 }

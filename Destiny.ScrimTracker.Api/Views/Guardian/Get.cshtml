@@ -1,0 +1,31 @@
+@model IEnumerable<Destiny.ScrimTracker.Logic.Models.GuardianSnapshot>
+
+@{
+    ViewBag.Title = "Clan Guardians";
+    ViewBag.Guardians = Model;
+    var count = 0;
+}
+
+<h2>Clan Guardians</h2>
+<table>
+    <tr>
+        <th>Clan Rank</th>
+        <th>@Html.DisplayNameFor(model => model.Guardian.GamerTag)</th>
+        <th>@Html.DisplayNameFor(model => model.GuardianElo)</th>
+        <th>@Html.DisplayNameFor(model => model.GuardianEfficiency)</th>
+        <th>@Html.DisplayNameFor(model => model.Guardian.LifetimeKills)</th>
+        <th>@Html.DisplayNameFor(model => model.Guardian.LifetimeDeaths)</th>
+    </tr>
+    @foreach (var guardian in Model)
+    {
+        count += 1;
+        <tr>
+            <th>@count</th>
+            <th>@guardian.Guardian.GamerTag</th>
+            <th>@guardian.GuardianElo.ToString("F0")</th>
+            <th>@guardian.GuardianEfficiency.ToString("F2")</th>
+            <th>@guardian.Guardian.LifetimeKills</th>
+            <th>@guardian.Guardian.LifetimeDeaths</th>
+        </tr>
+    }
+</table>

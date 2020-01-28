@@ -30,17 +30,26 @@ namespace Destiny.ScrimTracker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Third Party 
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             
             // Register Adapters
-            services.AddDbContext<GuardianContext>(options => options.UseNpgsql(Configuration.GetConnectionString("GuardianDatabase"), b=> b.MigrationsAssembly("Destiny.ScrimTracker.Api")));
-            
+            services.AddDbContext<DatabaseContext>(options => 
+                options.UseNpgsql(connectionString,b => b.MigrationsAssembly("Destiny.ScrimTracker.Api")));
+
             // Register Repositories
             services.AddTransient<IGuardianRepository, GuardianRepository>();
+            services.AddTransient<IGuardianEloRepository, GuardianEloRepository>();
+            services.AddTransient<IGuardianEfficiencyRepository, GuardianEfficiencyRepository>();
+            services.AddTransient<IGuardianMatchResultsRepository, GuardianMatchResultsRepository>();
+            services.AddTransient<IMatchTeamRepository, MatchTeamRepository>();
+            services.AddTransient<IMatchRepository, MatchRepository>();
             
             // Register Services
             services.AddTransient<IGuardianService, GuardianService>();
+            services.AddTransient<IMatchService, MatchService>();
             
             services.AddControllers();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

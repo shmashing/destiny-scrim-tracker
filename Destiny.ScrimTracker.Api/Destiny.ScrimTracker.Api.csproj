@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Destiny.ScrimTracker.Logic\Destiny.ScrimTracker.Logic.csproj" />
   </ItemGroup>
 
+  <Target Name="PrePublishTarget" AfterTargets="Publish">
+    <Exec Command="dotnet ef database update" />
+  </Target>
+  
 </Project>
