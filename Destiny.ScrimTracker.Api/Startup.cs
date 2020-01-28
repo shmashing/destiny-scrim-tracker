@@ -24,7 +24,7 @@ namespace Destiny.ScrimTracker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Third Party 
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var connectionString = ParseConnection(Environment.GetEnvironmentVariable("DATABASE_URL"));
             
             // Register Adapters
             services.AddDbContext<DatabaseContext>(options => 
@@ -62,6 +62,17 @@ namespace Destiny.ScrimTracker.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private string ParseConnection(string connectionUri)
+        {
+            var uri = new Uri(connectionUri);
+            var database = uri.AbsolutePath.Trim('/');
+            var user = uri.UserInfo.Split(':')[0];
+            var password = uri.UserInfo.Split(':')[1];
+            var port = uri.Port > 0 ? uri.Port : 5432;
+            var connectionString = $"Server={uri.Host};Database={database};User Id={user};Password={password};Port={port}";
+            return connectionString;
         }
     }
 }
