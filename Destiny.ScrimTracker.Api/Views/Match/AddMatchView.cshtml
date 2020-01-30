@@ -1,13 +1,13 @@
-@model object
-
 <!DOCTYPE html>
 
 <html>
 <head>
     <title>Add A New Match</title>
 </head>
+
 <body>
-<form action="/add_match">
+@using (Html.BeginForm("FormatRequestAndAddMatch", "Match", FormMethod.Get, new {numOfTeams = "", playersPerTeam=""}))
+{
     <div>
         <label>Number of Teams:</label>
         <input type="text" name="numOfTeams"/>
@@ -16,9 +16,9 @@
         <label>Number of Players per Team:</label>
         <input type="text" name="playersPerTeam"/>
     </div>
-    <div>
-        <input type="submit" value="Submit"/>
-    </div>
-</form>
+<div>
+    <input type="submit" value="Submit"/>
+</div>
+}
 </body>
 </html>

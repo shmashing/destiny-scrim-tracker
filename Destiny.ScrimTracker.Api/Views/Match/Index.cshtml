@@ -11,18 +11,50 @@
 
 @foreach (var match in Model)
 {
-    <div>
-        @match.MatchType.ToString()
-        Teams
-        
-        @foreach (var team in match.Teams)
+    <div class="match">
+        <h3 class="match-header">@match.MatchType</h3>
+
+        @if (match.MatchType == MatchType.Rumble)
         {
-            <fieldset>
-                <legend>
-                    @team.Name @team.TeamScore
-                </legend>
+            <div>
                 <table class="table">
                     <thead>
+                    <tr>
+                        <th scope="col">Guardian</th>
+                        <th scope="col">Efficiency</th>
+                        <th scope="col">Kills</th>
+                        <th scope="col">Deaths</th>
+                        <th scope="col">Assists</th>
+                    </tr>
+                    </thead>
+
+                    @foreach (var team in match.Teams)
+                    {
+                        foreach (var results in team.GuardianMatchResults)
+                        {
+                            <tr>
+                                <th>@results.GuardianName</th>
+                                <td>@results.Efficiency.ToString("F2")</td>
+                                <td>@results.Kills</td>
+                                <td>@results.Deaths</td>
+                                <td>@results.Assists</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+            @foreach (var team in match.Teams)
+            {
+                <div class="col-xs-6">
+                    <h4 class="sub-header">
+                        @team.Name @team.TeamScore
+                    </h4>
+                    <table class="table">
+                        <thead>
                         <tr>
                             <th scope="col">Guardian</th>
                             <th scope="col">Efficiency</th>
@@ -30,23 +62,22 @@
                             <th scope="col">Deaths</th>
                             <th scope="col">Assists</th>
                         </tr>
-                    </thead>
-                    @foreach (var results in team.GuardianMatchResults)
-                    {
-                        <tr>
-                            <th>@results.GuardianName</th>
-                            <th>@results.Efficiency.ToString("F2")</th>
-                            <th>@results.Kills</th>
-                            <th>@results.Deaths</th>
-                            <th>@results.Assists</th>
-                        </tr>
-                    }
-                </table>
-        </fieldset>
+                        </thead>
+                        @foreach (var results in team.GuardianMatchResults)
+                        {
+                            <tr>
+                                <th>@results.GuardianName</th>
+                                <th>@results.Efficiency.ToString("F2")</th>
+                                <th>@results.Kills</th>
+                                <th>@results.Deaths</th>
+                                <th>@results.Assists</th>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+            </div>
         }
-    </div>
-    <div>
-        ---------------------------------------------------------------------------------------
     </div>
 }
 </html>
