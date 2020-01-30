@@ -1,5 +1,4 @@
 using System;
-using Destiny.ScrimTracker.Api.Middleware;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
@@ -59,7 +58,6 @@ namespace Destiny.ScrimTracker.Api
 
             app.UseAuthorization();
 
-            app.UseMiddleware<AdminSafeListMiddleware>(Environment.GetEnvironmentVariable("AdminSafeList"));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
