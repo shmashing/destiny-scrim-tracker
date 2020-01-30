@@ -59,7 +59,7 @@ namespace Destiny.ScrimTracker.Api
 
             app.UseAuthorization();
 
-            app.UseMiddleware<AdminSafeListMiddleware>(Configuration["AdminSafeList"]);
+            app.UseMiddleware<AdminSafeListMiddleware>(Environment.GetEnvironmentVariable("AdminSafeList"));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
