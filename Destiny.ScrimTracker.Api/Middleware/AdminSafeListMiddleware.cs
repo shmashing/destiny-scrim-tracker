@@ -27,12 +27,11 @@ namespace Destiny.ScrimTracker.Api.Middleware
             var remoteIp = context.Connection.RemoteIpAddress;
             _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp.GetAddressBytes());
 
-            var ipWhiteList = _adminSafeList.Split(';');
-            var ipWhiteListBytes = ipWhiteList.Select(ip => IPAddress.Parse(ip).GetAddressBytes());
+            var ipWhiteList = _adminSafeList.Split(';').Select(IPAddress.Parse);
             
-            _logger.LogDebug("Admin Whitelist: {safeList}", string.Join(";", ipWhiteListBytes));
+            _logger.LogDebug("Admin Whitelist: {safeList}", string.Join(";", ipWhiteList.Select(ip => ip.ToString())));
             
-            var badIp = !ipWhiteListBytes.Contains(remoteIp.GetAddressBytes());
+            var badIp = !ipWhiteList.Contains(remoteIp);
 
             if(badIp) 
             {
