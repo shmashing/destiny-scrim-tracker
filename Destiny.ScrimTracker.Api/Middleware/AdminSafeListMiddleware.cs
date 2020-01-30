@@ -25,11 +25,13 @@ namespace Destiny.ScrimTracker.Api.Middleware
         public async Task Invoke(HttpContext context)
         {
             var remoteIp = context.Connection.RemoteIpAddress;
-                _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp);
+            _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp);
 
             var ip = _adminSafeList.Split(';');
-            var bytes = remoteIp.GetAddressBytes(); 
+            var bytes = remoteIp.GetAddressBytes();
             var badIp = true;
+            
+            _logger.LogDebug("Admin Safe List: {safeList}", _adminSafeList);            
             
             foreach (var address in ip)
             {
@@ -43,8 +45,7 @@ namespace Destiny.ScrimTracker.Api.Middleware
 
             if(badIp) 
             {
-                _logger.LogInformation(
-                        "Forbidden Request from Remote IP address: {RemoteIp}", remoteIp);
+                _logger.LogInformation("Forbidden Request from Remote IP address: {RemoteIp}", remoteIp);
                 context.Response.StatusCode = 401;
                 return;
             }
