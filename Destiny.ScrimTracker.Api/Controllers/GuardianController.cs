@@ -33,6 +33,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpGet("/add_guardian")]
+        [Authorize]
         public IActionResult AddGuardianView()
         {
             return View();

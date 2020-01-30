@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Destiny.ScrimTracker.Api.Controllers
 {
-    public class AuthController : Controller
+    public class AccountController : Controller
     {
         public async Task Login(string returnUrl = "/")
         {
@@ -24,6 +24,11 @@ namespace Destiny.ScrimTracker.Api.Controllers
                 RedirectUri = Url.Action("Index", "Home")
             });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

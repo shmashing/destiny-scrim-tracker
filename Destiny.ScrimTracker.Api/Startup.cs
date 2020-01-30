@@ -120,9 +120,12 @@ namespace Destiny.ScrimTracker.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             app.UseStaticFiles();
-            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();

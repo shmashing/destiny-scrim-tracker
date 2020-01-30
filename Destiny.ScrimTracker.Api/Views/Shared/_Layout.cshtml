@@ -38,14 +38,17 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Guardian" asp-action="Get">Guardians</a></li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Match" asp-action="AddMatchView">Add A Match</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a id="qsLogoutBtn" asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                        <li><a id="qsLogoutBtn" asp-controller="Account" asp-action="Logout">Logout</a></li>
                     }
                     else
                     {
-                        <li><a id="qsLoginBtn" asp-controller="Auth" asp-action="Login">Login</a></li>
+                        <li><a id="qsLoginBtn" asp-controller="Account" asp-action="Login">Login</a></li>
                     }
                 </ul>
             </div>
