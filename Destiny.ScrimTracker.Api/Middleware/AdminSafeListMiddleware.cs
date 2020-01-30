@@ -25,11 +25,12 @@ namespace Destiny.ScrimTracker.Api.Middleware
         public async Task Invoke(HttpContext context)
         {
             var remoteIp = context.Connection.RemoteIpAddress;
-            _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp.ToString());
+            _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp.GetAddressBytes());
 
-            var ip = _adminSafeList.Split(';');
+            var ipWhiteList = _adminSafeList.Split(';');
+            var ipWhiteListBytes = ipWhiteList.Select(ip => IPAddress.Parse(ip).GetAddressBytes());
             
-            var badIp = !ip.Contains(remoteIp.ToString());
+            var badIp = !ipWhiteListBytes.Contains(remoteIp.GetAddressBytes());
 
             if(badIp) 
             {
