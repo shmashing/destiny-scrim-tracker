@@ -8,8 +8,9 @@
     var guardians = ViewBag.Guardians;
     var teamName = new[] {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel"};
 }
+
 <h2>Add Match</h2>
-@using (Html.BeginForm("FormatRequestAndAddMatch", "Home", new {numOfTeams = numberOfTeams, playersPerTeam = playersPerTeam}, FormMethod.Post))
+@using (Html.BeginForm("FormatRequestAndAddMatch", "Match", new {numOfTeams = numberOfTeams, playersPerTeam = playersPerTeam}, FormMethod.Post))
 {
     <div>
         @Html.LabelFor(req => req.MatchType)

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+@using Destiny.ScrimTracker.Logic.Models
+@model IEnumerable<MatchResults>
+
+@{
+    ViewBag.Title = "Recent Clan Matches";
+}
+
+<h2>Clan Matches</h2>
+
+@foreach (var match in Model)
+{
+    <div>
+        @match.MatchType.ToString()
+        Teams
+        
+        @foreach (var team in match.Teams)
+        {
+            <fieldset>
+                <legend>
+                    @team.Name @team.TeamScore
+                </legend>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Guardian</th>
+                            <th scope="col">Efficiency</th>
+                            <th scope="col">Kills</th>
+                            <th scope="col">Deaths</th>
+                            <th scope="col">Assists</th>
+                        </tr>
+                    </thead>
+                    @foreach (var results in team.GuardianMatchResults)
+                    {
+                        <tr>
+                            <th>@results.GuardianName</th>
+                            <th>@results.Efficiency.ToString("F2")</th>
+                            <th>@results.Kills</th>
+                            <th>@results.Deaths</th>
+                            <th>@results.Assists</th>
+                        </tr>
+                    }
+                </table>
+        </fieldset>
+        }
+    </div>
+    <div>
+        ---------------------------------------------------------------------------------------
+    </div>
+}
+
+</html>
