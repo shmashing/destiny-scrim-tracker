@@ -29,8 +29,6 @@ namespace Destiny.ScrimTracker.Api.Middleware
 
             var ipWhiteList = _adminSafeList.Split(';').Select(IPAddress.Parse);
             
-            _logger.LogDebug("Admin Whitelist: {safeList}", string.Join(";", ipWhiteList.Select(ip => ip.ToString())));
-            
             var badIp = !ipWhiteList.Contains(remoteIp);
 
             if(badIp) 
