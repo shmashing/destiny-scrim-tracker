@@ -34,10 +34,9 @@
                     </tr>
                     @foreach (var results in team.GuardianMatchResults)
                     {
-                        
                         <tr>
                             <th>@results.GuardianName</th>
-                            <th>@results.Efficiency</th>
+                            <th>@results.Efficiency.ToString("F2")</th>
                             <th>@results.Kills</th>
                             <th>@results.Deaths</th>
                             <th>@results.Assists</th>
