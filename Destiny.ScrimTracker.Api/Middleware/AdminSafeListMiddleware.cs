@@ -24,32 +24,29 @@ namespace Destiny.ScrimTracker.Api.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Method != "GET")
-            {
-                var remoteIp = context.Connection.RemoteIpAddress;
+            var remoteIp = context.Connection.RemoteIpAddress;
                 _logger.LogDebug("Request from Remote IP address: {RemoteIp}", remoteIp);
 
-                var ip = _adminSafeList.Split(';');
-
-                var bytes = remoteIp.GetAddressBytes();
-                var badIp = true;
-                foreach (var address in ip)
+            var ip = _adminSafeList.Split(';');
+            var bytes = remoteIp.GetAddressBytes(); 
+            var badIp = true;
+            
+            foreach (var address in ip)
+            {
+                var testIp = IPAddress.Parse(address);
+                if(testIp.GetAddressBytes().SequenceEqual(bytes))
                 {
-                    var testIp = IPAddress.Parse(address);
-                    if(testIp.GetAddressBytes().SequenceEqual(bytes))
-                    {
-                        badIp = false;
-                        break;
-                    }
+                    badIp = false;
+                    break;
                 }
+            }
 
-                if(badIp)
-                {
-                    _logger.LogInformation(
+            if(badIp) 
+            {
+                _logger.LogInformation(
                         "Forbidden Request from Remote IP address: {RemoteIp}", remoteIp);
-                    context.Response.StatusCode = 401;
-                    return;
-                }
+                context.Response.StatusCode = 401;
+                return;
             }
 
             await _next.Invoke(context);
