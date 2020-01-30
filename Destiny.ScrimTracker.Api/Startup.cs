@@ -67,7 +67,7 @@ namespace Destiny.ScrimTracker.Api
 
                     // Configure the Auth0 Client ID and Client Secret
                     options.ClientId = Configuration["Auth0:ClientId"];
-                    options.ClientSecret = Configuration["Auth0:ClientSecret"];
+                    options.ClientSecret = Environment.GetEnvironmentVariable("Auth0:ClientSecret");
 
                     // Set response type to code
                     options.ResponseType = OpenIdConnectResponseType.Code;

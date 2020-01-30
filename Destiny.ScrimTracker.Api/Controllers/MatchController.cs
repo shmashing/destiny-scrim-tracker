@@ -6,6 +6,7 @@ using Destiny.ScrimTracker.Api.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Destiny.ScrimTracker.Api.Controllers
@@ -62,6 +63,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("add_match")]
         public IActionResult FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
         {
@@ -102,6 +104,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public string Post(CreateMatchRequest request)
         {
             var match = request.ToMatch();
@@ -109,6 +112,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         [Route("{matchId}")]
         public string Delete([FromRoute] string matchId)
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Destiny.ScrimTracker.Api.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -38,6 +39,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
         
         [HttpPost("/add_guardian")]
+        [Authorize]
         public IActionResult AddGuardian([FromForm] CreateGuardianRequest request)
         {
             if (!ModelState.IsValid)
@@ -63,6 +65,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpPut("{guardianId}")]
+        [Authorize]
         public Guardian Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
         {
             var guardian = request.ToGuardian(guardianId);
@@ -70,6 +73,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpDelete("{guardianId}")]
+        [Authorize]
         public string Delete([FromRoute] string guardianId)
         {
             return _guardianService.DeleteGuardian(guardianId);
