@@ -66,6 +66,10 @@ namespace Destiny.ScrimTracker.Api
 
         private string ParseConnection(string connectionUri)
         {
+            if (string.IsNullOrEmpty(connectionUri)) // local development
+            {
+                return Configuration.GetConnectionString("GuardianDatabase");
+            }
             var uri = new Uri(connectionUri);
             var database = uri.AbsolutePath.Trim('/');
             var user = uri.UserInfo.Split(':')[0];

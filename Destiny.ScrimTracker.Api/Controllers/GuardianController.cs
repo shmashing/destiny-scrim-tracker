@@ -31,6 +31,25 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return View(guardianSnapshots);
         }
 
+        [HttpGet("/add_guardian")]
+        public IActionResult AddGuardianView()
+        {
+            return View();
+        }
+        
+        [HttpPost("/add_guardian")]
+        public IActionResult AddGuardian([FromForm] CreateGuardianRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("AddGuardianView");
+            }
+            
+            var guardian = request.ToGuardian();
+            _guardianService.CreateGuardian(guardian);
+            return Redirect("/guardian");
+        }
+        
         [HttpGet("{guardianId}")]
         public GuardianResponse GetGuardian(string guardianId)
         {
@@ -41,13 +60,6 @@ namespace Destiny.ScrimTracker.Api.Controllers
                 Guardian = guardian,
                 GuardianElo = guardianElo
             };
-        }
-
-        [HttpPost]
-        public string Post(CreateGuardianRequest request)
-        {
-            var guardian = request.ToGuardian();
-            return _guardianService.CreateGuardian(guardian);
         }
 
         [HttpPut("{guardianId}")]

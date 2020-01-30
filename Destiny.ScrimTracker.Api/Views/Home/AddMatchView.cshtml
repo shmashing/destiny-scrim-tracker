@@ -1,0 +1,28 @@
+@model object
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Add A New Match</title>
+</head>
+<body>
+<form action="/add_match">
+    <div>
+        <label>Number of Teams:</label>
+        <input type="text" name="numOfTeams"/>
+    </div>
+    <div>
+        <label>Number of Players per Team:</label>
+        <input type="text" name="playersPerTeam"/>
+    </div>
+    <div>
+        <input type="submit" value="Submit"/>
+    </div>
+</form>
+</body>
+</html>

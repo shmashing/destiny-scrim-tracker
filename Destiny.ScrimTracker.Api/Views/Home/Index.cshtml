@@ -5,9 +5,13 @@
     ViewBag.Title = "Recent Clan Matches";
 }
 
-<h2>title</h2>
-
 <h2>Clan Matches</h2>
+
+<div>
+    <a href="/match"><button >Add a New Match</button></a>
+    <a href="/guardian"><button>All Guardians</button></a>
+</div>
+
 @foreach (var match in Model)
 {
     <div>
@@ -16,28 +20,31 @@
         
         @foreach (var team in match.Teams)
         {
-            <h3>
-                @team.Name : @team.TeamScore
-            </h3>
-            <table>
-                <tr>
-                    <th>Guardian</th>
-                    <th>Efficiency</th>
-                    <th>Kills</th>
-                    <th>Deaths</th>
-                    <th>Assists</th>
-                </tr>
-                @foreach (var results in team.GuardianMatchResults)
-                {
+            <fieldset>
+                <legend>
+                    @team.Name @team.TeamScore
+                </legend>
+                <table>
                     <tr>
-                        <th>@results.GuardianName</th>
-                        <th>@results.Efficiency</th>
-                        <th>@results.Kills</th>
-                        <th>@results.Deaths</th>
-                        <th>@results.Assists</th>
+                        <th>Guardian</th>
+                        <th>Efficiency</th>
+                        <th>Kills</th>
+                        <th>Deaths</th>
+                        <th>Assists</th>
                     </tr>
-                }
+                    @foreach (var results in team.GuardianMatchResults)
+                    {
+                        
+                        <tr>
+                            <th>@results.GuardianName</th>
+                            <th>@results.Efficiency</th>
+                            <th>@results.Kills</th>
+                            <th>@results.Deaths</th>
+                            <th>@results.Assists</th>
+                        </tr>
+                    }
             </table>
+        </fieldset>
         }
     </div>
     <div>

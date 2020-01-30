@@ -15,11 +15,6 @@ namespace Destiny.ScrimTracker.Api.Controllers
             _matchService = matchService;
         }
         
-        // GET
-        public void Get()
-        {
-            return;
-        }
 
         [HttpPost]
         public string Post(CreateMatchRequest request)

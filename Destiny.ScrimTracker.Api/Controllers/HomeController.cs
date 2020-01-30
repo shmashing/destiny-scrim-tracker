@@ -28,6 +28,12 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return View(matchResults);
         }
 
+        [Route("match")]
+        public IActionResult AddMatchView()
+        {
+            return View();
+        }
+        
         [Route("add_match")]
         public IActionResult CreateMatchForm([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
         {

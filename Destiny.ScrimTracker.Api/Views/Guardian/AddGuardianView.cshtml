@@ -1,0 +1,28 @@
+@model Destiny.ScrimTracker.Api.Requests.CreateGuardianRequest
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Add A New Guardian</title>
+</head>
+<body>
+<form method="post" asp-controller="Guardian" asp-action="AddGuardian">
+    <fieldset>
+        <legend>Add Guardian</legend>
+        <div>
+            @Html.DisplayNameFor(model => model.GamerTag)
+            @Html.TextBoxFor(model => model.GamerTag)
+            @Html.ValidationMessage("GamerTag")
+        </div>
+        <div>
+            <input type="submit" value="Submit"/>
+        </div>
+    </fieldset>
+</form>
+</body>
+</html>
