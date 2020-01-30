@@ -30,6 +30,8 @@ namespace Destiny.ScrimTracker.Api.Middleware
             var ipWhiteList = _adminSafeList.Split(';');
             var ipWhiteListBytes = ipWhiteList.Select(ip => IPAddress.Parse(ip).GetAddressBytes());
             
+            _logger.LogDebug("Admin Whitelist: {safeList}", string.Join(";", ipWhiteListBytes));
+            
             var badIp = !ipWhiteListBytes.Contains(remoteIp.GetAddressBytes());
 
             if(badIp) 
