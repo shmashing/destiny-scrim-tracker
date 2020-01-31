@@ -11,6 +11,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
     {
         GuardianEfficiency GetGuardianEfficiency(string guardianId);
         IEnumerable<double> GetGuardianEfficiencies(string guardianId);
+        IEnumerable<GuardianEfficiency> GetGuardianAverageEfficiencies(string guardianId);
         void UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency);
         void UpdateGuardianMatchEfficiency(IEnumerable<GuardianMatchResult> guardianMatchResults);
         int DeleteGuardianEfficiencies(string guardianId);
@@ -37,6 +38,11 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         public IEnumerable<double> GetGuardianEfficiencies(string guardianId)
         {
             return _databaseContext.GuardianMatchResults.Where(eff => eff.GuardianId == guardianId && eff.MatchId != null).Select(gmr => gmr.Efficiency);
+        }
+
+        public IEnumerable<GuardianEfficiency> GetGuardianAverageEfficiencies(string guardianId)
+        {
+            return _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId && eff.MatchId != null);
         }
 
         public void UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency)

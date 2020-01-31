@@ -11,6 +11,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
     {
         IEnumerable<string> SaveGuardianResults(IEnumerable<GuardianMatchResult> matchResults);
         IEnumerable<GuardianMatchResult> GetGuardianMatchResults(string matchId, string teamId);
+        IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
         IEnumerable<string> DeleteGuardianResults(string matchId);
     }
     
@@ -36,6 +37,11 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         {
             return _databaseContext.GuardianMatchResults.Where(res =>
                 res.MatchId == matchId && res.MatchTeamId == teamId).ToList();
+        }
+
+        public IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId)
+        {
+            return _databaseContext.GuardianMatchResults.Where(res => res.GuardianId == guardianId);
         }
 
         public IEnumerable<string> DeleteGuardianResults(string matchId)

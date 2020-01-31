@@ -14,6 +14,7 @@ namespace Destiny.ScrimTracker.Logic.Services
     {
         string CreateMatch(Match match, IEnumerable<MatchTeam> teams);
         IEnumerable<MatchResults> GetMatchResults();
+        IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
         string DeleteMatch(string matchId);
     }
 
@@ -98,6 +99,12 @@ namespace Destiny.ScrimTracker.Logic.Services
             }
             
             return matchResults;
+        }
+
+        public IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId)
+        {
+            var matches = _matchResultsRepository.GetMatchResultsForGuardian(guardianId);
+            return matches;
         }
 
         public string DeleteMatch(string matchId)

@@ -15,6 +15,7 @@ namespace Destiny.ScrimTracker.Logic.Services
         Guardian UpdateGuardian(Guardian updatedGuardian);
         string DeleteGuardian(string guardianId);
         IEnumerable<GuardianElo> GetGuardianElo(string guardianId);
+        IEnumerable<GuardianEfficiency> GetGuardianEfficiency(string guardianId);
     }
     
     public class GuardianService : IGuardianService
@@ -100,6 +101,11 @@ namespace Destiny.ScrimTracker.Logic.Services
         public IEnumerable<GuardianElo> GetGuardianElo(string guardianId)
         {
             return _guardianEloRepository.GetGuardianElos(guardianId);
+        }
+
+        public IEnumerable<GuardianEfficiency> GetGuardianEfficiency(string guardianId)
+        {
+            return _guardianEfficiencyRepository.GetGuardianAverageEfficiencies(guardianId);
         }
     }
 }

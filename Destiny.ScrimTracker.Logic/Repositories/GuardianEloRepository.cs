@@ -29,7 +29,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         
         public IEnumerable<GuardianElo> GetGuardianElos(string guardianId)
         {
-            return _databaseContext.GuardianElos.Where(elo => elo.GuardianId == guardianId);
+            return _databaseContext.GuardianElos.Where(elo => elo.GuardianId == guardianId && elo.MatchId != null);
             
         }
 
