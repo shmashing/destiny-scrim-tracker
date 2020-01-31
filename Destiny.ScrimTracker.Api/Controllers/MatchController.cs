@@ -90,7 +90,14 @@ namespace Destiny.ScrimTracker.Api.Controllers
                         GuardianName = Request.Form[$"Team[{i}].MatchResults[{j}].GuardianName"]
                     };
 
-                    results.Efficiency = (double) (results.Kills + results.Assists) / results.Deaths;
+                    if (results.Deaths == 0)
+                    {
+                        results.Efficiency = 0;
+                    }
+                    else
+                    {
+                        results.Efficiency = (double) (results.Kills + results.Assists) / results.Deaths;
+                    }
                     Console.WriteLine($"Calculated Eff = {results.Efficiency:F4}");
                     guardianResults.Add(results);
                 }
