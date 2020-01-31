@@ -3,7 +3,7 @@
       "outputFileName": "wwwroot/css/site.min.css",
       "inputFiles": [
         "wwwroot/css/site.css",
-        "wwwroot/**/.css"
+        "wwwroot/**/*.css"
       ]
     },
     {
