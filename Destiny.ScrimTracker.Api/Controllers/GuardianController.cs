@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Destiny.ScrimTracker.Api.Requests;
 using Destiny.ScrimTracker.Logic.Models;
+using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,13 @@ namespace Destiny.ScrimTracker.Api.Controllers
     [Route("[controller]")]
     public class GuardianController : Controller
     {
+        private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
         private readonly ILogger<GuardianController> _logger;
 
-        public GuardianController(IGuardianService guardianService, ILogger<GuardianController> logger)
+        public GuardianController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardianController> logger)
         {
+            _matchService = matchService;
             _guardianService = guardianService;
             _logger = logger;
         }
@@ -54,15 +57,22 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
         
         [HttpGet("{guardianId}")]
-        public GuardianResponse GetGuardian(string guardianId)
+        public IActionResult GetGuardian(string guardianId)
         {
             var guardian = _guardianService.GetGuardian(guardianId);
             var guardianElo = _guardianService.GetGuardianElo(guardianId);
-            return new GuardianResponse()
+            var guardianEfficiency = _guardianService.GetGuardianEfficiency(guardianId);
+            var matchCount = _matchService.GetMatchResultsForGuardian(guardianId).Count();
+            
+            var guardianHistory = new GuardianHistory()
             {
                 Guardian = guardian,
-                GuardianElo = guardianElo
+                EfficiencyHistory = guardianEfficiency,
+                EloHistory = guardianElo,
+                MatchCount = matchCount
             };
+            
+            return View(guardianHistory);
         }
 
         [HttpPut("{guardianId}")]

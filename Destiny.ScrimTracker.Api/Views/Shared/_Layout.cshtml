@@ -58,7 +58,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="modal-footer">
             <p>&copy; 2020 - Scrims Tracker</p>
         </footer>
     </div>
@@ -81,9 +81,10 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/bootstrap/dist/js/mdb.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection("Script", required: false)
 </body>
 </html>

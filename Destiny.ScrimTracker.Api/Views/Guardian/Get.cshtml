@@ -24,7 +24,7 @@
         count += 1;
         <tr>
             <th scope="row">@count</th>
-            <td>@guardian.Guardian.GamerTag</td>
+            <td><a href=@($"guardian/{guardian.Guardian.Id}")>@guardian.Guardian.GamerTag</a></td>
             <td>@guardian.GuardianElo.ToString("F0")</td>
             <td>@guardian.GuardianEfficiency.ToString("F2")</td>
             <td>@guardian.Guardian.LifetimeKills</td>
