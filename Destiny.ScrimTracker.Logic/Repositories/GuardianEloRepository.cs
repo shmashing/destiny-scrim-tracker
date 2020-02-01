@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Destiny.ScrimTracker.Logic.Repositories
 {
@@ -29,8 +30,14 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         
         public IEnumerable<GuardianElo> GetGuardianElos(string guardianId)
         {
-            return _databaseContext.GuardianElos.Where(elo => elo.GuardianId == guardianId && elo.MatchId != null);
-            
+            var elos = _databaseContext.GuardianElos.Where(elo => elo.GuardianId == guardianId && elo.MatchId != null);
+
+            if (elos == null || !elos.Any())
+            {
+                return new GuardianElo[] {};
+            }
+
+            return elos;
         }
 
         public GuardianElo GetGuardianElo(string guardianId)

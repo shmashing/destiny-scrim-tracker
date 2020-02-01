@@ -23,13 +23,15 @@ namespace Destiny.ScrimTracker.Logic.Services
         private readonly IGuardianRepository _guardianRepository;
         private readonly IGuardianEloRepository _guardianEloRepository;
         private readonly IGuardianEfficiencyRepository _guardianEfficiencyRepository;
+        private readonly IGuardianMatchResultsRepository _matchResultsRepository;
 
         public GuardianService(IGuardianRepository guardianRepository, IGuardianEloRepository guardianEloRepository,
-            IGuardianEfficiencyRepository guardianEfficiencyRepository)
+            IGuardianEfficiencyRepository guardianEfficiencyRepository, IGuardianMatchResultsRepository matchResultsRepository)
         {
             _guardianRepository = guardianRepository;
             _guardianEloRepository = guardianEloRepository;
             _guardianEfficiencyRepository = guardianEfficiencyRepository;
+            _matchResultsRepository = matchResultsRepository;
         }
 
         public string CreateGuardian(Guardian guardian)
@@ -95,6 +97,8 @@ namespace Destiny.ScrimTracker.Logic.Services
         {
             _guardianEloRepository.DeleteGuardianElos(guardianId);
             _guardianEfficiencyRepository.DeleteGuardianEfficiencies(guardianId);
+            _matchResultsRepository.DeleteAllResultsForGuardian(guardianId);
+            
             return _guardianRepository.DeleteGuardian(guardianId);
         }
 

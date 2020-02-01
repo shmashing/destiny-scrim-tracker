@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Destiny.ScrimTracker.Logic.Repositories
 {
@@ -42,7 +43,14 @@ namespace Destiny.ScrimTracker.Logic.Repositories
 
         public IEnumerable<GuardianEfficiency> GetGuardianAverageEfficiencies(string guardianId)
         {
-            return _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId && eff.MatchId != null);
+            var efficiencies = _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId && eff.MatchId != null);
+
+            if (efficiencies == null || !efficiencies.Any())
+            {
+                return new GuardianEfficiency[] {};
+            }
+
+            return efficiencies;
         }
 
         public void UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency)

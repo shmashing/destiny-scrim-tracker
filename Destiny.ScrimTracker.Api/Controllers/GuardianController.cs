@@ -83,11 +83,12 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return _guardianService.UpdateGuardian(guardian);
         }
 
-        [HttpDelete("{guardianId}")]
+        [HttpPost("{guardianId}")]
         [Authorize]
-        public string Delete([FromRoute] string guardianId)
+        public IActionResult Delete([FromRoute] string guardianId)
         {
-            return _guardianService.DeleteGuardian(guardianId);
+            var guardian = _guardianService.DeleteGuardian(guardianId);
+            return RedirectToAction("Get");
         }
     }
 }
