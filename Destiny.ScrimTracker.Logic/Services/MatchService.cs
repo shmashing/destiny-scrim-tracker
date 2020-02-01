@@ -93,6 +93,7 @@ namespace Destiny.ScrimTracker.Logic.Services
                 {
                     MatchType = match.MatchType,
                     Teams = teams,
+                    MatchId = match.Id
                 };
                 
                 matchResults.Add(matchResult);
