@@ -92,7 +92,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
 
                     if (results.Deaths == 0)
                     {
-                        results.Efficiency = 0;
+                        results.Efficiency = results.Kills + results.Assists;
                     }
                     else
                     {
