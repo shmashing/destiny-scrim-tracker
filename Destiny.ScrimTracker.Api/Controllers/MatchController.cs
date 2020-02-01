@@ -122,10 +122,10 @@ namespace Destiny.ScrimTracker.Api.Controllers
 
         [HttpDelete]
         [Authorize]
-        [Route("{matchId}")]
-        public string Delete([FromRoute] string matchId)
+        public IActionResult Delete([FromQuery] string matchId)
         {
-            return _matchService.DeleteMatch(matchId);
+            _matchService.DeleteMatch(matchId);
+            return RedirectToAction("Index");
         }
     }
 }

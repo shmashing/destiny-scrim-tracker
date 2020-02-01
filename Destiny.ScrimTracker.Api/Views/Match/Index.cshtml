@@ -14,6 +14,8 @@
     <div class="match">
         <h3 class="match-header">@match.MatchType</h3>
 
+        @Html.ActionLink("Delete Match", "Delete", "Match", match.MatchId, new {})
+        <button asp-controller="Match" asp-action="Delete" data-method="delete" asp-route-matchId=@match.MatchId >Delete Match</button>
         @if (match.MatchType == MatchType.Rumble)
         {
             <div>
