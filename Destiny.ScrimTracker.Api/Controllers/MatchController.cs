@@ -120,9 +120,9 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return _matchService.CreateMatch(match, request.Teams);
         }
 
-        [HttpDelete]
+        [HttpPost("{matchId}")]
         [Authorize]
-        public IActionResult Delete([FromQuery] string matchId)
+        public IActionResult Delete([FromRoute] string matchId)
         {
             _matchService.DeleteMatch(matchId);
             return RedirectToAction("Index");
