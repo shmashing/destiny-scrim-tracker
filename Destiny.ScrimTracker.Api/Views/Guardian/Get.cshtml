@@ -7,15 +7,15 @@
 }
 
 <h2>Clan Guardians</h2>
-<table class="table">
+<table class="table" data-toggle="table" data-sort-name="GuardianElo" data-sort-order="desc">
     <thead>
         <tr>
             <th scope="col">Clan Rank</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Guardian.GamerTag)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.GuardianElo)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.GuardianEfficiency)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Guardian.LifetimeKills)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Guardian.LifetimeDeaths)</th>
+            <th scope="col">GamerTag</th>
+            <th scope="col" data-field="GuardianElo" data-sortable="true">Elo</th>
+            <th scope="col" data-field="GuardianEfficiency" data-sortable="true">Efficiency</th>
+            <th scope="col" data-field="LifetimeKills" data-sortable="true">Lifetime Kills</th>
+            <th scope="col" data-field="LifetimeDeaths" data-sortable="true">Lifetime Deaths</th>
         </tr>    
     </thead>
 
