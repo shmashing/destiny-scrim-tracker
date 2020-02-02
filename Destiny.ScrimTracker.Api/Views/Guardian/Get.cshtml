@@ -7,7 +7,7 @@
 }
 
 <h2>Clan Guardians</h2>
-<table class="table" data-toggle="table" data-sort-name="GuardianElo" data-sort-order="desc">
+<table class="table guardian-table" data-toggle="table" data-sort-name="GuardianElo" data-sort-order="desc">
     <thead>
         <tr>
             <th scope="col">Clan Rank</th>
@@ -22,8 +22,8 @@
     @foreach (var guardian in Model)
     {
         count += 1;
-        <tr>
-            <th scope="row">@count</th>
+        <tr class="guardian-rank">
+            <th scope="row" class="ranking"></th>
             <td><a href=@($"guardian/{guardian.Guardian.Id}")>@guardian.Guardian.GamerTag</a></td>
             <td>@guardian.GuardianElo.ToString("F0")</td>
             <td>@guardian.GuardianEfficiency.ToString("F2")</td>
