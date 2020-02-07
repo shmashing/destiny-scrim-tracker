@@ -46,6 +46,7 @@ namespace Destiny.ScrimTracker.Api
             // Register Services
             services.AddTransient<IGuardianService, GuardianService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IMatchMakingService, MatchMakingService>();
             
             // ASP.NET Registrations
             services.Configure<CookiePolicyOptions>(options =>

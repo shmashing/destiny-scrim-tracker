@@ -1,0 +1,32 @@
+@model IEnumerable<Destiny.ScrimTracker.Logic.Models.GuardianSnapshot>
+
+<!DOCTYPE html>
+
+@{
+    var count = 0;
+}
+
+<html>
+<body>
+<div>
+    <form method="post" asp-action="MatchMake" asp-controller="MatchMaking">
+        <label for="teamSize">Ideal Team Size:</label>
+        <input type="text" name="teamSize" id="teamSize" value=""/>
+        <ul class="list-group list-group-flush">
+            @foreach (var guardian in Model)
+            {
+                count += 1;
+                
+                <li class="list-group-item">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" class="form-check-input" value=@guardian.Guardian.Id name=@($"guardian-{count}")>
+                        <label class="form-check-label" for=@($"guardian-{count}")>@guardian.Guardian.GamerTag</label>
+                    </div>
+                </li>
+            }
+        </ul>
+        <input type="submit" value="MatchMake"/>
+    </form>
+</div>
+</body>
+</html>

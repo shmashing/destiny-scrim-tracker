@@ -1,0 +1,25 @@
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
+@model System.Collections.Generic.IEnumerable<Destiny.ScrimTracker.Logic.Models.MatchMadeTeam>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>
+      @foreach (var team in Model)
+      {
+          <p>@team.TeamElo</p>
+          foreach (var guardian in team.Guardians)
+          {
+              <p>@guardian.Guardian.GamerTag</p>
+          }
+          <p> ---------- </p>
+      }
+</div>
+</body>
+</html>
