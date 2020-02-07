@@ -29,7 +29,6 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult MatchMake()
         {
             var guardianKeys = Request.Form.Keys.Where(k => k.Contains("guardian"));
