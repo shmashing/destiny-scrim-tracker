@@ -10,10 +10,10 @@
 <html>
 <body>
 <div>
-    <form method="post" asp-action="MatchMake" asp-controller="MatchMaking">
+    <form method="post" asp-action="MatchMake" asp-controller="MatchMaking" class="form-inline active-pink-3 active-pink-4">
         <label for="teamSize">Ideal Team Size:</label>
-        <input type="text" name="teamSize" id="teamSize" value=""/>
-        
+        <input type="text" name="teamSize" class="form-control md-form mt-0" id="teamSize" value=""/>
+
         <div class="pre-scrollable scrollable-list">
             <ul class="list-group list-group-flush overflow-auto">
                 @foreach (var guardian in Model)
