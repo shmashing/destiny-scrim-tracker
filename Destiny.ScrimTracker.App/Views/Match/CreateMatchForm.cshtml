@@ -2,15 +2,12 @@
 @model Destiny.ScrimTracker.App.Requests.CreateMatchFormModel
 
 @{
-    ViewBag.Title = "CreateMatchForm";
-    var numberOfTeams = ViewBag.NumberOfTeams;
-    var playersPerTeam = ViewBag.PlayersPerTeam;
+    ViewBag.Title = "Create Match";
     var guardians = ViewBag.Guardians;
-    var teamName = new[] {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel"};
 }
 
 <h2>Add Match</h2>
-@using (Html.BeginForm("FormatRequestAndAddMatch", "Match", new {numOfTeams = numberOfTeams, playersPerTeam = playersPerTeam}, FormMethod.Post))
+@using (Html.BeginForm("FormatRequestAndAddMatch", "Match", FormMethod.Post))
 {
     <div>
         @Html.LabelFor(req => req.MatchType)
@@ -19,27 +16,64 @@
         @Html.DropDownListFor(req => req.MatchType, Html.GetEnumSelectList<Destiny.ScrimTracker.Logic.Models.MatchType>())
     </div>
     
-    @for (var i = 0; i < numberOfTeams; i ++)
-    {
-        <fieldset>
-            <legend>@teamName[i] Team</legend>
-            Team Score:
-            <input name=@($"Team[{i}].TeamScore") id="" />
-            <input name=@($"Team[{i}].Name") value=@(teamName[i]) hidden="true"/>
-            @for (var j = 0; j < playersPerTeam; j++)
-            {
-                <div>
-                    Guardian:
-                    @Html.DropDownList($"Team[{i}].MatchResults[{j}].GuardianName", new SelectList(guardians))
-                    Kills:
-                    <input name=@($"Team[{i}].MatchResults[{j}].Kills") type="number" />
-                    Assists:
-                    <input name=@($"Team[{i}].MatchResults[{j}].Assists") type="number" />
-                    Deaths:
-                    <input name=@($"Team[{i}].MatchResults[{j}].Deaths") type="number" />
-                </div>
-            }
-        </fieldset>
-    }
-    <input type="submit" value="Create Match"/>
+    <fieldset class="alpha-team">
+        <legend class="teamForm-header">Alpha Team</legend>
+        Team Score: 
+        <input name="Team[0].TeamScore"/>
+        <input name="Team[0].Name" value="Alpha" hidden="true"/>
+        
+        <ul class="alpha-guardian-form">
+            <li class="alpha-guardian">
+                Guardian: @Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))
+                Kills: <input name="Team[0].MatchResults[0].Kills"/>
+                Assists: <input name="Team[0].MatchResults[0].Assists"/>
+                Deaths: <input name="Team[0].MatchResults[0].Deaths"/>
+            </li>
+        </ul>
+        <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">Add Another Guardian</button>
+    </fieldset>
+    <fieldset class="bravo-team">
+        <legend class="teamForm-header">Bravo Team</legend>
+        Team Score: 
+        <input name="Team[1].TeamScore"/>
+        <input name="Team[1].Name" value="Bravo" hidden="true"/>
+        
+        <ul class="bravo-guardian-form">
+            <li class="bravo-guardian">
+                Guardian: @Html.DropDownList("Team[1].MatchResults[0].GuardianName", new SelectList(guardians))
+                Kills: <input name="Team[1].MatchResults[0].Kills"/>
+                Assists: <input name="Team[1].MatchResults[0].Assists"/>
+                Deaths: <input name="Team[1].MatchResults[0].Deaths"/>
+            </li>
+        </ul>
+        <button onclick="addGuardian('bravo')" type="button" class="btn btn-outline-primary btn-sm">Add Another Guardian</button>
+    </fieldset>
+    <button type="submit" value="Create Match" class="btn btn-primary">Create Match</button>
 }
+
+<script type="text/javascript">
+function addGuardian(teamName) {
+  console.log(teamName+'-guardian')
+  var guardianCount = document.getElementsByClassName(teamName+'-guardian').length;
+  
+  console.log(guardianCount)
+  var newGuardianInput = document.querySelector('.'+teamName+'-guardian').cloneNode(true);
+  var childrenNodes = newGuardianInput.childNodes;
+  for (var i = 0; i < childrenNodes.length; i++)
+  {
+    var nodeType = childrenNodes[i].nodeName;
+          
+      if (nodeType != "#text")
+      {
+          var childName = childrenNodes[i].name;
+          console.log(childName);
+          var newName = childName.replace('MatchResults[0]', 'MatchResults['+guardianCount+']');
+          console.log(newName)
+          childrenNodes[i].setAttribute("name", newName);
+      }
+  }
+  
+  document.querySelector('.'+teamName+'-guardian-form').appendChild(newGuardianInput);
+}
+
+</script>

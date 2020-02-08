@@ -4,7 +4,6 @@
 
 @{
     var count = 0;
-    var selectedGuardians = 0;
 }
 
 <html>
@@ -38,7 +37,7 @@
 
 <script type="text/javascript">
 function onChecked() {
-    var form = document.forms[0]; // your form element (whatever)
+    var form = document.forms[0];
     var checkedElms = form.querySelectorAll(':checked').length;
 
     document.getElementById("counter").innerHTML = "Guardians Selected: " + checkedElms; 

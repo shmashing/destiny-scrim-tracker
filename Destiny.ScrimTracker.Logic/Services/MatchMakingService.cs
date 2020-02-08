@@ -118,15 +118,15 @@ namespace Destiny.ScrimTracker.Logic.Services
                 {
                     teams = KeepNextConfiguration(nextTeamConfiguration);
                 }
-                else
-                {
-                    var probabilityToKeepChange = _random.NextDouble();
-
-                    if (probabilityToKeepChange < Math.Exp(-delta / temperature))
-                    {
-                        teams = KeepNextConfiguration(nextTeamConfiguration);
-                    }
-                }
+//                else
+//                {
+//                    var probabilityToKeepChange = _random.NextDouble();
+//
+//                    if (probabilityToKeepChange < Math.Exp(-delta / temperature))
+//                    {
+//                        teams = KeepNextConfiguration(nextTeamConfiguration);
+//                    }
+//                }
                 
                 temperature *= _alpha;
             }
