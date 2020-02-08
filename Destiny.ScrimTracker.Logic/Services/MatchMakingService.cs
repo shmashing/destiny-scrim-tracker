@@ -116,7 +116,6 @@ namespace Destiny.ScrimTracker.Logic.Services
                 var delta = newConfigurationDelta - startingDelta;
                 if (delta < 0)
                 {
-                    Console.WriteLine("Thats a good swap!");
                     teams = KeepNextConfiguration(nextTeamConfiguration);
                 }
                 else
@@ -125,8 +124,6 @@ namespace Destiny.ScrimTracker.Logic.Services
 
                     if (probabilityToKeepChange < Math.Exp(-delta / temperature))
                     {
-                        Console.WriteLine($"Probability: {probabilityToKeepChange} and exponential: {Math.Exp(-delta / temperature)}");
-                        Console.WriteLine("Eh.. probability checks out. Keeping change");
                         teams = KeepNextConfiguration(nextTeamConfiguration);
                     }
                 }
@@ -134,7 +131,6 @@ namespace Destiny.ScrimTracker.Logic.Services
                 temperature *= _alpha;
             }
 
-            Console.WriteLine($"Total Iterations: {iterations}");
             return teams;
         }
 
