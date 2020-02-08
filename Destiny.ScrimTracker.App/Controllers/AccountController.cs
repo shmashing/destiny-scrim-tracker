@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     public class AccountController : Controller
     {

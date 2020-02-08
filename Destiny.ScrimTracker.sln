@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destiny.ScrimTracker.Api", "Destiny.ScrimTracker.Api\Destiny.ScrimTracker.Api.csproj", "{1AB6C6F5-96A5-4075-A740-73F2A86EBA0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destiny.ScrimTracker.App", "Destiny.ScrimTracker.App\Destiny.ScrimTracker.App.csproj", "{1AB6C6F5-96A5-4075-A740-73F2A86EBA0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destiny.ScrimTracker.Logic", "Destiny.ScrimTracker.Logic\Destiny.ScrimTracker.Logic.csproj", "{80D1AF08-64C1-4EEE-B550-500713799DA1}"
 EndProject

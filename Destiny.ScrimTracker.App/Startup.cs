@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace Destiny.ScrimTracker.Api
+namespace Destiny.ScrimTracker.App
 {
     public class Startup
     {
@@ -33,7 +33,7 @@ namespace Destiny.ScrimTracker.Api
             
             // Register Adapters
             services.AddDbContext<DatabaseContext>(options => 
-                options.UseNpgsql(connectionString,b => b.MigrationsAssembly("Destiny.ScrimTracker.Api")));
+                options.UseNpgsql(connectionString,b => b.MigrationsAssembly("Destiny.ScrimTracker.App")));
 
             // Register Repositories
             services.AddTransient<IGuardianRepository, GuardianRepository>();

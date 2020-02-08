@@ -2,7 +2,7 @@ using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("")]
     public class HomeController : Controller

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using Destiny.ScrimTracker.Api.Requests;
+using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]

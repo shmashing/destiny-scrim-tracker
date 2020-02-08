@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Destiny.ScrimTracker.Api.Migrations
+namespace Destiny.ScrimTracker.App.Migrations
 {
     public partial class InitialCreation : Migration
     {

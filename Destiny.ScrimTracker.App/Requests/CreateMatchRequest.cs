@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Destiny.ScrimTracker.Logic.Models;
 
-namespace Destiny.ScrimTracker.Api.Requests
+namespace Destiny.ScrimTracker.App.Requests
 {
     public class CreateMatchRequest
     {

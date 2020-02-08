@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     public class MatchMakingController : Controller
     {
