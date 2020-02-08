@@ -24,7 +24,7 @@ namespace Destiny.ScrimTracker.App.Controllers
         // GET
         public IActionResult Index()
         {
-            var guardians = _guardianService.GetGuardians();
+            var guardians = _guardianService.GetGuardians().OrderBy(g => g.Guardian.GamerTag);
             return View(guardians);
         }
 

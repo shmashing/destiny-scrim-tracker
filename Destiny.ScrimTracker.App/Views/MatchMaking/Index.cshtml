@@ -4,6 +4,7 @@
 
 @{
     var count = 0;
+    var selectedGuardians = 0;
 }
 
 <html>
@@ -12,21 +13,34 @@
     <form method="post" asp-action="MatchMake" asp-controller="MatchMaking">
         <label for="teamSize">Ideal Team Size:</label>
         <input type="text" name="teamSize" id="teamSize" value=""/>
-        <ul class="list-group list-group-flush">
-            @foreach (var guardian in Model)
-            {
-                count += 1;
-                
-                <li class="list-group-item">
-                    <div class="custom-checkbox">
-                        <input type="checkbox" class="form-check-input" value=@guardian.Guardian.Id name=@($"guardian-{count}")>
-                        <label class="form-check-label" for=@($"guardian-{count}")>@guardian.Guardian.GamerTag</label>
-                    </div>
-                </li>
-            }
-        </ul>
+        
+        <div class="pre-scrollable scrollable-list">
+            <ul class="list-group list-group-flush overflow-auto">
+                @foreach (var guardian in Model)
+                {
+                    count += 1;
+
+                    <li class="list-group-item">
+                        <div class="custom-checkbox">
+                            <input type="checkbox" class="form-check-input guardianCheckbox" onchange="onChecked()" id="guardianCheck" value=@guardian.Guardian.Id name=@($"guardian-{count}")>
+                            <label class="form-check-label" for=@($"guardian-{count}")>@guardian.Guardian.GamerTag</label>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <p id="counter">Guardians Selected: 0</p>
         <input type="submit" value="MatchMake"/>
     </form>
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+function onChecked() {
+    var form = document.forms[0]; // your form element (whatever)
+    var checkedElms = form.querySelectorAll(':checked').length;
+
+    document.getElementById("counter").innerHTML = "Guardians Selected: " + checkedElms; 
+}
+</script>
