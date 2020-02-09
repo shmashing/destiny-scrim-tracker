@@ -13,6 +13,13 @@
         <label for="teamSize">Team Size:</label>
         <input type="text" name="teamSize" class="form-control md-form mt-0" id="teamSize" value=""/>
 
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+
         <div class="pre-scrollable scrollable-list">
             <ul class="list-group list-group-flush overflow-auto">
                 @foreach (var guardian in Model)

@@ -25,6 +25,12 @@ namespace Destiny.ScrimTracker.App.Controllers
         public IActionResult Index()
         {
             var guardians = _guardianService.GetGuardians().OrderBy(g => g.Guardian.GamerTag);
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            
             return View(guardians);
         }
 
@@ -32,14 +38,21 @@ namespace Destiny.ScrimTracker.App.Controllers
         public IActionResult MatchMake()
         {
             var guardianKeys = Request.Form.Keys.Where(k => k.Contains("guardian"));
-            var teamSize = int.Parse(Request.Form["teamSize"]);
+            var teamSizeIsValidInput = int.TryParse(Request.Form["teamSize"], out var teamSize);
             var guardianIds = guardianKeys.Select(key => Request.Form[key]).Select(dummy => (string) dummy).ToList();
+
+            if (!teamSizeIsValidInput)
+            {
+                TempData["Error"] = "Team size can not be left blank.";
+                return RedirectToAction("Index");
+            }
 
             if (guardianIds.Count() % teamSize != 0)
             {
-                ViewBag["Error"] = "Number Of Guardians And Team sizes don't match up.";
+                TempData["Error"] = "Number of guardians selected and team sizes don't match up.";
                 return RedirectToAction("Index");
             }
+            
             var teams = _matchMakingService.MatchTeams(guardianIds, teamSize);
             
             return View(teams);

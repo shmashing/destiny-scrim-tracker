@@ -16,13 +16,13 @@
         @Html.DropDownListFor(req => req.MatchType, Html.GetEnumSelectList<Destiny.ScrimTracker.Logic.Models.MatchType>())
     </div>
     
-    <fieldset class="alpha-team">
+    <fieldset class="alpha-team table-responsive col-xs-6 d-flex">
         <legend class="teamForm-header">Alpha Team</legend>
         Team Score: 
         <input name="Team[0].TeamScore"/>
         <input name="Team[0].Name" value="Alpha" hidden="true"/>
         
-        <table class="table table-responsive">
+        <table class="table  ">
             <thead>
             <tr>
                 <th>Guardian</th>
@@ -32,31 +32,32 @@
             </tr>
             </thead>
             <tbody class="alpha-guardian-form">
-                <tr class="alpha-guardian">
-                    <td>@Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))</td>
-                    <td>
-                        <input name="Team[0].MatchResults[0].Kills"/>
-                    </td>
-                    <td>
-                        <input name="Team[0].MatchResults[0].Assists"/>
-                    </td>
-                    <td>
-                        <input name="Team[0].MatchResults[0].Deaths"/>
-                    </td>
-                </tr>
+            <tr class="alpha-guardian">
+                <td>@Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))</td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Kills"/>
+                </td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Assists"/>
+                </td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Deaths"/>
+                </td>
+            </tr>
             </tbody>
         </table>
         <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
         </button>
     </fieldset>
-    <fieldset class="bravo-team">
+    <div></div>
+    <fieldset class="bravo-teamtable-responsive col-xs-6 d-flex">
         <legend class="teamForm-header">Bravo Team</legend>
         Team Score: 
         <input name="Team[1].TeamScore"/>
         <input name="Team[1].Name" value="Bravo" hidden="true"/>
         
-        <table class="table table-responsive">
+        <table class="table table-responsive col-xs-6 d-flex">
             <thead>
             <tr>
                 <th>Guardian</th>
