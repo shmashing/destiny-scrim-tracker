@@ -22,15 +22,33 @@
         <input name="Team[0].TeamScore"/>
         <input name="Team[0].Name" value="Alpha" hidden="true"/>
         
-        <ul class="alpha-guardian-form">
-            <li class="alpha-guardian">
-                Guardian: @Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))
-                Kills: <input name="Team[0].MatchResults[0].Kills"/>
-                Assists: <input name="Team[0].MatchResults[0].Assists"/>
-                Deaths: <input name="Team[0].MatchResults[0].Deaths"/>
-            </li>
-        </ul>
-        <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">Add Another Guardian</button>
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Guardian</th>
+                <th>Kills</th>
+                <th>Assists</th>
+                <th>Deaths</th>
+            </tr>
+            </thead>
+            <tbody class="alpha-guardian-form">
+                <tr class="alpha-guardian">
+                    <td>@Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))</td>
+                    <td>
+                        <input name="Team[0].MatchResults[0].Kills"/>
+                    </td>
+                    <td>
+                        <input name="Team[0].MatchResults[0].Assists"/>
+                    </td>
+                    <td>
+                        <input name="Team[0].MatchResults[0].Deaths"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
+        </button>
     </fieldset>
     <fieldset class="bravo-team">
         <legend class="teamForm-header">Bravo Team</legend>
@@ -38,39 +56,56 @@
         <input name="Team[1].TeamScore"/>
         <input name="Team[1].Name" value="Bravo" hidden="true"/>
         
-        <ul class="bravo-guardian-form">
-            <li class="bravo-guardian">
-                Guardian: @Html.DropDownList("Team[1].MatchResults[0].GuardianName", new SelectList(guardians))
-                Kills: <input name="Team[1].MatchResults[0].Kills"/>
-                Assists: <input name="Team[1].MatchResults[0].Assists"/>
-                Deaths: <input name="Team[1].MatchResults[0].Deaths"/>
-            </li>
-        </ul>
-        <button onclick="addGuardian('bravo')" type="button" class="btn btn-outline-primary btn-sm">Add Another Guardian</button>
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Guardian</th>
+                <th>Kills</th>
+                <th>Assists</th>
+                <th>Deaths</th>
+            </tr>
+            </thead>
+            <tbody class="bravo-guardian-form">
+            <tr class="bravo-guardian">
+                <td>@Html.DropDownList("Team[1].MatchResults[0].GuardianName", new SelectList(guardians))</td>
+                <td><input name="Team[1].MatchResults[0].Kills"/></td>
+                <td><input name="Team[1].MatchResults[0].Assists"/></td>
+                <td><input name="Team[1].MatchResults[0].Deaths"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="addGuardian('bravo')" type="button" class="btn btn-outline-primary btn-sm">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
+        </button>
     </fieldset>
-    <button type="submit" value="Create Match" class="btn btn-primary">Create Match</button>
+    
+    <div class="submitButton">
+        <button type="submit" value="Create Match" class="btn btn-primary">Create Match</button>
+    </div>
 }
 
 <script type="text/javascript">
 function addGuardian(teamName) {
-  console.log(teamName+'-guardian')
   var guardianCount = document.getElementsByClassName(teamName+'-guardian').length;
   
-  console.log(guardianCount)
+  console.log('Guardian Count: ' + guardianCount)
   var newGuardianInput = document.querySelector('.'+teamName+'-guardian').cloneNode(true);
   var childrenNodes = newGuardianInput.childNodes;
   for (var i = 0; i < childrenNodes.length; i++)
   {
-    var nodeType = childrenNodes[i].nodeName;
-          
-      if (nodeType != "#text")
-      {
-          var childName = childrenNodes[i].name;
-          console.log(childName);
-          var newName = childName.replace('MatchResults[0]', 'MatchResults['+guardianCount+']');
-          console.log(newName)
-          childrenNodes[i].setAttribute("name", newName);
+    var grandChildNode = childrenNodes[i].childNodes;
+    
+    for (var j = 0; j < grandChildNode.length; j ++) {
+      var grandChildNodeType = grandChildNode[j].nodeName;
+      
+      if (grandChildNodeType == "INPUT" || grandChildNodeType == "SELECT"){
+        var childName = grandChildNode[j].name;
+        console.log(childName);
+        var newName = childName.replace('MatchResults[0]', 'MatchResults['+guardianCount+']');
+        console.log(newName);
+        grandChildNode[j].setAttribute("name", newName);
       }
+    }
   }
   
   document.querySelector('.'+teamName+'-guardian-form').appendChild(newGuardianInput);
