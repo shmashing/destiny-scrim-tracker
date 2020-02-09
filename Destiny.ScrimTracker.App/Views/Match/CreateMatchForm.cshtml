@@ -16,7 +16,7 @@
         @Html.DropDownListFor(req => req.MatchType, Html.GetEnumSelectList<Destiny.ScrimTracker.Logic.Models.MatchType>())
     </div>
     
-    <fieldset class="alpha-team table-responsive col-xs-6 d-flex">
+    <div class="alpha-team table-responsive d-flex">
         <legend class="teamForm-header">Alpha Team</legend>
         Team Score: 
         <input name="Team[0].TeamScore"/>
@@ -49,15 +49,15 @@
         <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
         </button>
-    </fieldset>
+    </div>
     <div></div>
-    <fieldset class="bravo-teamtable-responsive col-xs-6 d-flex">
+    <div class="bravo-team table-responsive d-flex">
         <legend class="teamForm-header">Bravo Team</legend>
         Team Score: 
         <input name="Team[1].TeamScore"/>
         <input name="Team[1].Name" value="Bravo" hidden="true"/>
         
-        <table class="table table-responsive col-xs-6 d-flex">
+        <table class="table">
             <thead>
             <tr>
                 <th>Guardian</th>
@@ -78,7 +78,7 @@
         <button onclick="addGuardian('bravo')" type="button" class="btn btn-outline-primary btn-sm">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
         </button>
-    </fieldset>
+    </div>
     
     <div class="submitButton">
         <button type="submit" value="Create Match" class="btn btn-primary">Create Match</button>
