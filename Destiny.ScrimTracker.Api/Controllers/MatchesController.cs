@@ -13,12 +13,12 @@ namespace Destiny.ScrimTracker.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MatchController : Controller
+    public class MatchesController : Controller
     {
         private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
 
-        public MatchController(IMatchService matchService, IGuardianService guardianService)
+        public MatchesController(IMatchService matchService, IGuardianService guardianService)
         {
             _matchService = matchService;
             _guardianService = guardianService;
@@ -120,7 +120,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return _matchService.CreateMatch(match, request.Teams);
         }
 
-        [HttpPost("{matchId}")]
+        [HttpDelete("{matchId}")]
         [Authorize]
         public IActionResult Delete([FromRoute] string matchId)
         {

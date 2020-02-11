@@ -35,13 +35,13 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Match" asp-action="Index">Match History</a></li>
+                    <li><a asp-area="" asp-controller="Matches" asp-action="Index">Match History</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Guardians" asp-action="Get">Guardians</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Match" asp-action="AddMatchView">Add A Match</a></li>
+                    <li><a asp-area="" asp-controller="Matches" asp-action="AddMatchView">Add A Match</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)

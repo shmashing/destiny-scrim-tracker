@@ -37,10 +37,8 @@
                             Do you really want to delete this match?
                         </div>
                         <div class="modal-footer">
-                            <form method="post" asp-action="Delete" asp-controller="Match" asp-route-matchId=@match.MatchId>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger" onclick="deleteMatch('@match.MatchId')">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -114,3 +112,15 @@
     </div>
 }
 </html>
+<script type="text/javascript">
+    function deleteMatch(matchId) {
+            $.ajax({
+                url: `/match/${matchId}`,
+                type: 'DELETE',
+                success: function(results)
+                {
+                    window.location.href = '/match'
+                }
+            })
+    }
+</script>
