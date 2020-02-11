@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img" />
-    <Folder Include="wwwroot\lib" />
+    <Folder Include="wwwroot\3rdParty" />
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">

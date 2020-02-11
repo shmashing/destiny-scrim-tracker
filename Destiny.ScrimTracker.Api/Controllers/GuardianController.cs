@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Destiny.ScrimTracker.Api.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -90,7 +92,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
         public IActionResult Delete([FromRoute] string guardianId)
         {
             var guardian = _guardianService.DeleteGuardian(guardianId);
-            return RedirectToAction("Get");
+            return Json(guardian);
         }
     }
 }
