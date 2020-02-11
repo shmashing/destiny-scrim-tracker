@@ -15,13 +15,13 @@ namespace Destiny.ScrimTracker.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GuardianController : Controller
+    public class GuardiansController : Controller
     {
         private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
-        private readonly ILogger<GuardianController> _logger;
+        private readonly ILogger<GuardiansController> _logger;
 
-        public GuardianController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardianController> logger)
+        public GuardiansController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardiansController> logger)
         {
             _matchService = matchService;
             _guardianService = guardianService;
@@ -35,14 +35,14 @@ namespace Destiny.ScrimTracker.Api.Controllers
             return View(guardianSnapshots);
         }
 
-        [HttpGet("/add_guardian")]
+        [HttpGet("/new")]
         [Authorize]
         public IActionResult AddGuardianView()
         {
             return View();
         }
         
-        [HttpPost("/add_guardian")]
+        [HttpPost("/new")]
         [Authorize]
         public IActionResult AddGuardian([FromForm] CreateGuardianRequest request)
         {
