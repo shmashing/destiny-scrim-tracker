@@ -53,7 +53,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
             
             var guardian = request.ToGuardian();
             _guardianService.CreateGuardian(guardian);
-            return Redirect("/guardian");
+            return Redirect($"/guardians/{guardian.Id}");
         }
         
         [HttpGet("{guardianId}")]
