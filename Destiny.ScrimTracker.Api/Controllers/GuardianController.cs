@@ -53,7 +53,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
             
             var guardian = request.ToGuardian();
             _guardianService.CreateGuardian(guardian);
-            return Redirect($"/guardians/{guardian.Id}");
+            return Redirect($"/guardians");
         }
         
         [HttpGet("{guardianId}")]
@@ -77,13 +77,15 @@ namespace Destiny.ScrimTracker.Api.Controllers
 
         [HttpPut("{guardianId}")]
         [Authorize]
-        public Guardian Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
+        public IActionResult Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
         {
             var guardian = request.ToGuardian(guardianId);
-            return _guardianService.UpdateGuardian(guardian);
+            var updatedGuardian = _guardianService.UpdateGuardian(guardian);
+
+            return Redirect($"/guardians/{updatedGuardian.Id}");
         }
 
-        [HttpPost("{guardianId}")]
+        [HttpDelete("{guardianId}")]
         [Authorize]
         public IActionResult Delete([FromRoute] string guardianId)
         {
