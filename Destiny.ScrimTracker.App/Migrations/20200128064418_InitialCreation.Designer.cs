@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Destiny.ScrimTracker.App.Migrations
+namespace Destiny.ScrimTracker.Api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20200128064418_InitialCreation")]

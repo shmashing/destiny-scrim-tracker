@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Scrims Tracker</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/3rdParty/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css" rel="stylesheet">
     </environment>
@@ -35,18 +35,14 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Match" asp-action="Index">Match History</a></li>
+                    <li><a asp-area="" asp-controller="Matches" asp-action="Index">Match History</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Guardian" asp-action="Get">Guardians</a></li>
+                    <li><a asp-area="" asp-controller="Guardians" asp-action="Get">Guardians</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Match" asp-action="CreateMatchForm">Add A Match</a></li>
+                    <li><a asp-area="" asp-controller="Matches" asp-action="CreateMatchForm">Add A Match</a></li>
                 </ul>
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="MatchMaking" asp-action="Index">Matchmaking</a></li>
-                </ul>
-                
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -70,9 +66,9 @@
     </div>
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap/dist/js/mdb.js"></script>
+        <script src="~/3rdParty/jquery/dist/jquery.js"></script>
+        <script src="~/3rdParty/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/3rdParty/bootstrap/dist/js/mdb.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
     </environment>

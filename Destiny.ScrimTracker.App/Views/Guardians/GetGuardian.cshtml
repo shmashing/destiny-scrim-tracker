@@ -45,10 +45,8 @@
                         Do you really want to delete this guardian? This will also delete all of the match results for this guardian.
                     </div>
                     <div class="modal-footer">
-                        <form method="post" asp-action="Delete" asp-controller="Guardian" asp-route-guardianId=@Model.Guardian.Id>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" onclick="deleteGuardian()">Delete</button>
                     </div>
                 </div>
             </div>
@@ -99,5 +97,16 @@ var myLineChart = new Chart(ctxL, {
         }
       }
     });
+
+function deleteGuardian() {
+    $.ajax({
+        url: '/guardians/@(Model.Guardian.Id)',
+        type: 'DELETE',
+        success: function(results)
+        {
+            window.location.href = '/guardians'
+        }
+    })
+}
 </script>
 }

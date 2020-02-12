@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
-using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +10,13 @@ namespace Destiny.ScrimTracker.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GuardianController : Controller
+    public class GuardiansController : Controller
     {
         private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
-        private readonly ILogger<GuardianController> _logger;
+        private readonly ILogger<GuardiansController> _logger;
 
-        public GuardianController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardianController> logger)
+        public GuardiansController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardiansController> logger)
         {
             _matchService = matchService;
             _guardianService = guardianService;
@@ -83,12 +78,12 @@ namespace Destiny.ScrimTracker.App.Controllers
             return _guardianService.UpdateGuardian(guardian);
         }
 
-        [HttpPost("{guardianId}")]
+        [HttpDelete("{guardianId}")]
         [Authorize]
         public IActionResult Delete([FromRoute] string guardianId)
         {
             var guardian = _guardianService.DeleteGuardian(guardianId);
-            return RedirectToAction("Get");
+            return Json(guardian);
         }
     }
 }

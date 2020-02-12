@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Destiny.ScrimTracker.Logic.Models;
 
-namespace Destiny.ScrimTracker.App
+namespace Destiny.ScrimTracker.Api
 {
     public class GuardianResponse
     {

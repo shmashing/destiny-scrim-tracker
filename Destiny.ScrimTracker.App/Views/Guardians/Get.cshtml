@@ -24,7 +24,7 @@
         count += 1;
         <tr class="guardian-rank">
             <th scope="row" class="ranking"></th>
-            <td><a href=@($"guardian/{guardian.Guardian.Id}")>@guardian.Guardian.GamerTag</a></td>
+            <td><a href=@($"guardians/{guardian.Guardian.Id}")>@guardian.Guardian.GamerTag</a></td>
             <td>@guardian.GuardianElo.ToString("F0")</td>
             <td>@guardian.GuardianEfficiency.ToString("F2")</td>
             <td>@guardian.Guardian.LifetimeKills</td>
@@ -32,4 +32,4 @@
         </tr>
     }
 </table>
-<a href="/add_guardian">Add a new Guardian</a>
+<a href="/new">Add a new Guardian</a>

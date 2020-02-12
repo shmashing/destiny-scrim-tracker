@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
@@ -13,12 +12,12 @@ namespace Destiny.ScrimTracker.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MatchController : Controller
+    public class MatchesController : Controller
     {
         private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
 
-        public MatchController(IMatchService matchService, IGuardianService guardianService)
+        public MatchesController(IMatchService matchService, IGuardianService guardianService)
         {
             _matchService = matchService;
             _guardianService = guardianService;
@@ -105,12 +104,12 @@ namespace Destiny.ScrimTracker.App.Controllers
             return _matchService.CreateMatch(match, request.Teams);
         }
 
-        [HttpPost("{matchId}")]
+        [HttpDelete("{matchId}")]
         [Authorize]
         public IActionResult Delete([FromRoute] string matchId)
         {
-            _matchService.DeleteMatch(matchId);
-            return RedirectToAction("Index");
+            var match = _matchService.DeleteMatch(matchId);
+            return Json(match);
         }
     }
 }

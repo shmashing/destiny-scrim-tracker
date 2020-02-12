@@ -38,25 +38,6 @@ body {
 .ranking:first-child::before {
     content: counter(rowNumber);
 }
-
-.scrollable-list {
-    margin-bottom: 20px;
-    border: thin solid lightslategrey;
-}
-
-#teamSize {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-
-.submitButton {
-    margin-top: 5rem;
-}
-
-.btn:focus,.btn:active:focus,.btn.active:focus,
-.btn.focus,.btn:active.focus,.btn.active.focus {
-    outline: none;
-}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
