@@ -1,0 +1,112 @@
+@using System.Collections.Specialized
+@using Destiny.ScrimTracker.Logic.Models
+@using Newtonsoft.Json
+@model Destiny.ScrimTracker.Logic.Models.GuardianHistory
+
+@{
+  var eloHistory = Model.EloHistory.Select(elo => elo.NewElo).ToArray();
+  var eloHistoryString = JsonConvert.SerializeObject(eloHistory);
+  var eloHistoryRange = Model.EloHistory.Select(elo => elo.TimeStamp.ToString("M/d/yy")).ToArray();
+  var eloHistoryRangeString = JsonConvert.SerializeObject(eloHistoryRange);
+  var efficiencyHistory = Model.EfficiencyHistory.Select(eff => eff.NewEfficiency).ToArray();
+  var efficiencyHistoryString = JsonConvert.SerializeObject(efficiencyHistory);
+  var maxEff = efficiencyHistory.Any() ? efficiencyHistory.Max() + 1 : 1;
+}
+<!DOCTYPE html>
+
+<html>
+<body>
+<div>
+  <div>
+    <div class="body-header container d-flex">
+        <h3 class="body-title">@Model.Guardian.GamerTag</h3>
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary delete-button" data-toggle="modal" data-target="#exampleModal">
+                Delete Guardian
+            </button>
+        }
+    
+        <h5>Total Match Count: @Model.MatchCount</h5>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you really want to delete this guardian? This will also delete all of the match results for this guardian.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" onclick="deleteGuardian()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="container">
+    <canvas id="lineChart"></canvas>
+  </div>
+</div>
+</body>
+</html>
+@section Scripts
+{
+  <script>
+var ctxL = document.getElementById("lineChart").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+      type: 'line',
+      data: {
+        labels: JSON.parse('@Html.Raw(eloHistoryRangeString)'),
+        datasets: [{
+          label: 'ELO',
+          yAxisID: 'A',
+          data: @(eloHistoryString),
+          backgroundColor: "rgba(52, 207, 235, 0.5)"
+        }, {
+          label: 'Efficiency',
+          yAxisID: 'B',
+          data: @(efficiencyHistoryString),
+          backgroundColor: "rgba(246, 33, 33, 0.5)"
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            id: 'A',
+            type: 'linear',
+            position: 'left',
+          }, {
+            id: 'B',
+            type: 'linear',
+            position: 'right',
+            ticks: {
+              max: @(maxEff),
+              min: 0
+            }
+          }]
+        }
+      }
+    });
+
+function deleteGuardian() {
+    $.ajax({
+        url: '/guardians/@(Model.Guardian.Id)',
+        type: 'DELETE',
+        success: function(results)
+        {
+            window.location.href = '/guardians'
+        }
+    })
+}
+</script>
+}

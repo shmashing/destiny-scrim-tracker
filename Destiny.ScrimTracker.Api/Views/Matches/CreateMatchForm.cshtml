@@ -1,0 +1,45 @@
+@using System.IO
+@model Destiny.ScrimTracker.Api.Requests.CreateMatchFormModel
+
+@{
+    ViewBag.Title = "CreateMatchForm";
+    var numberOfTeams = ViewBag.NumberOfTeams;
+    var playersPerTeam = ViewBag.PlayersPerTeam;
+    var guardians = ViewBag.Guardians;
+    var teamName = new[] {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel"};
+}
+
+<h2>Add Match</h2>
+@using (Html.BeginForm("FormatRequestAndAddMatch", "Matches", new {numOfTeams = numberOfTeams, playersPerTeam = playersPerTeam}, FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(req => req.MatchType)
+    </div>
+    <div>
+        @Html.DropDownListFor(req => req.MatchType, Html.GetEnumSelectList<Destiny.ScrimTracker.Logic.Models.MatchType>())
+    </div>
+    
+    @for (var i = 0; i < numberOfTeams; i ++)
+    {
+        <fieldset>
+            <legend>@teamName[i] Team</legend>
+            Team Score:
+            <input name=@($"Team[{i}].TeamScore") id="" />
+            <input name=@($"Team[{i}].Name") value=@(teamName[i]) hidden="true"/>
+            @for (var j = 0; j < playersPerTeam; j++)
+            {
+                <div>
+                    Guardian:
+                    @Html.DropDownList($"Team[{i}].MatchResults[{j}].GuardianName", new SelectList(guardians))
+                    Kills:
+                    <input name=@($"Team[{i}].MatchResults[{j}].Kills") type="number" />
+                    Assists:
+                    <input name=@($"Team[{i}].MatchResults[{j}].Assists") type="number" />
+                    Deaths:
+                    <input name=@($"Team[{i}].MatchResults[{j}].Deaths") type="number" />
+                </div>
+            }
+        </fieldset>
+    }
+    <input type="submit" value="Create Match"/>
+}

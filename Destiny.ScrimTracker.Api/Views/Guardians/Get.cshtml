@@ -1,0 +1,35 @@
+@model IEnumerable<Destiny.ScrimTracker.Logic.Models.GuardianSnapshot>
+
+@{
+    ViewBag.Title = "Clan Guardians";
+    ViewBag.Guardians = Model;
+    var count = 0;
+}
+
+<h2>Clan Guardians</h2>
+<table class="table guardian-table" data-toggle="table" data-sort-name="GuardianElo" data-sort-order="desc">
+    <thead>
+        <tr>
+            <th scope="col">Clan Rank</th>
+            <th scope="col">GamerTag</th>
+            <th scope="col" data-field="GuardianElo" data-sortable="true">Elo</th>
+            <th scope="col" data-field="GuardianEfficiency" data-sortable="true">Efficiency</th>
+            <th scope="col" data-field="LifetimeKills" data-sortable="true">Lifetime Kills</th>
+            <th scope="col" data-field="LifetimeDeaths" data-sortable="true">Lifetime Deaths</th>
+        </tr>    
+    </thead>
+
+    @foreach (var guardian in Model)
+    {
+        count += 1;
+        <tr class="guardian-rank">
+            <th scope="row" class="ranking"></th>
+            <td><a href=@($"guardians/{guardian.Guardian.Id}")>@guardian.Guardian.GamerTag</a></td>
+            <td>@guardian.GuardianElo.ToString("F0")</td>
+            <td>@guardian.GuardianEfficiency.ToString("F2")</td>
+            <td>@guardian.Guardian.LifetimeKills</td>
+            <td>@guardian.Guardian.LifetimeDeaths</td>
+        </tr>
+    }
+</table>
+<a href="/new">Add a new Guardian</a>

@@ -8,4 +8,21 @@
     <ProjectReference Include="..\Destiny.ScrimTracker.Logic\Destiny.ScrimTracker.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.4.1" />
+    <PackageReference Include="bootstrap.sass" Version="4.4.1" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img" />
+    <Folder Include="wwwroot\3rdParty" />
+  </ItemGroup>
+
+  <Target Name="PrePublishTarget" AfterTargets="Publish">
+    <Exec Command="dotnet ef database update" />
+  </Target>
+  
 </Project>

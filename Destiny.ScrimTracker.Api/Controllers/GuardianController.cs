@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Destiny.ScrimTracker.Api.Requests;
 using Destiny.ScrimTracker.Logic.Models;
+using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,47 +17,82 @@ namespace Destiny.ScrimTracker.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GuardianController : ControllerBase
+    public class GuardiansController : Controller
     {
+        private readonly IMatchService _matchService;
         private readonly IGuardianService _guardianService;
-        private readonly ILogger<GuardianController> _logger;
+        private readonly ILogger<GuardiansController> _logger;
 
-        public GuardianController(IGuardianService guardianService, ILogger<GuardianController> logger)
+        public GuardiansController(IMatchService matchService, IGuardianService guardianService, ILogger<GuardiansController> logger)
         {
+            _matchService = matchService;
             _guardianService = guardianService;
             _logger = logger;
         }
 
         [HttpGet]
-        public IEnumerable<Guardian> Get()
+        public IActionResult Get()
         {
-            return _guardianService.GetGuardians();
+            var guardianSnapshots = _guardianService.GetGuardians();
+            return View(guardianSnapshots);
         }
 
-        [HttpGet("{guardianId}")]
-        public Guardian GetGuardian(string guardianId)
+        [HttpGet("/new")]
+        [Authorize]
+        public IActionResult AddGuardianView()
         {
-            return _guardianService.GetGuardian(guardianId);
+            return View();
         }
-
-        [HttpPost]
-        public string Post(CreateGuardianRequest request)
+        
+        [HttpPost("/new")]
+        [Authorize]
+        public IActionResult AddGuardian([FromForm] CreateGuardianRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("AddGuardianView");
+            }
+            
             var guardian = request.ToGuardian();
-            return _guardianService.CreateGuardian(guardian);
+            _guardianService.CreateGuardian(guardian);
+            return Redirect($"/guardians");
+        }
+        
+        [HttpGet("{guardianId}")]
+        public IActionResult GetGuardian(string guardianId)
+        {
+            var guardian = _guardianService.GetGuardian(guardianId);
+            var guardianElo = _guardianService.GetGuardianElo(guardianId);
+            var guardianEfficiency = _guardianService.GetGuardianEfficiency(guardianId);
+            var matchCount = _matchService.GetMatchResultsForGuardian(guardianId).Count();
+            
+            var guardianHistory = new GuardianHistory()
+            {
+                Guardian = guardian,
+                EfficiencyHistory = guardianEfficiency,
+                EloHistory = guardianElo,
+                MatchCount = matchCount
+            };
+            
+            return View(guardianHistory);
         }
 
         [HttpPut("{guardianId}")]
-        public Guardian Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
+        [Authorize]
+        public IActionResult Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
         {
             var guardian = request.ToGuardian(guardianId);
-            return _guardianService.UpdateGuardian(guardian);
+            var updatedGuardian = _guardianService.UpdateGuardian(guardian);
+
+            return Redirect($"/guardians/{updatedGuardian.Id}");
         }
 
         [HttpDelete("{guardianId}")]
-        public string Delete([FromRoute] string guardianId)
+        [Authorize]
+        public IActionResult Delete([FromRoute] string guardianId)
         {
-            return _guardianService.DeleteGuardian(guardianId);
+            var guardian = _guardianService.DeleteGuardian(guardianId);
+            return Json(guardian);
         }
     }
 }

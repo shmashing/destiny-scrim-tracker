@@ -13,8 +13,9 @@ namespace Destiny.ScrimTracker.Api.Requests
         {
             return new Guardian()
             {
-                Id = $"gua_{Guid.NewGuid():N}",
-                GamerTag = this.GamerTag
+                Id = $"{ModelIDPrefixes.Guardian}_{Guid.NewGuid():N}",
+                GamerTag = this.GamerTag,
+                EloModifier = EloModifier.NewGuardian
             };
         }
     }
