@@ -72,10 +72,12 @@ namespace Destiny.ScrimTracker.App.Controllers
 
         [HttpPut("{guardianId}")]
         [Authorize]
-        public Guardian Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
+        public IActionResult Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
         {
             var guardian = request.ToGuardian(guardianId);
-            return _guardianService.UpdateGuardian(guardian);
+            var updatedGuardian = _guardianService.UpdateGuardian(guardian);
+            
+            return Redirect($"guardians/{updatedGuardian.Id}");
         }
 
         [HttpDelete("{guardianId}")]
