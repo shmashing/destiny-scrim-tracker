@@ -30,14 +30,14 @@ namespace Destiny.ScrimTracker.App.Controllers
             return View(guardianSnapshots);
         }
 
-        [HttpGet("/add_guardian")]
+        [HttpGet("/new")]
         [Authorize]
         public IActionResult AddGuardianView()
         {
             return View();
         }
         
-        [HttpPost("/add_guardian")]
+        [HttpPost("/new")]
         [Authorize]
         public IActionResult AddGuardian([FromForm] CreateGuardianRequest request)
         {
@@ -48,7 +48,7 @@ namespace Destiny.ScrimTracker.App.Controllers
             
             var guardian = request.ToGuardian();
             _guardianService.CreateGuardian(guardian);
-            return Redirect("/guardian");
+            return Redirect("/guardians");
         }
         
         [HttpGet("{guardianId}")]

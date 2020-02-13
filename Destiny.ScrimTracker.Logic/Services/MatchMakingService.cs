@@ -17,9 +17,12 @@ namespace Destiny.ScrimTracker.Logic.Services
         IEnumerable<MatchMadeTeam> MatchTeams(IEnumerable<string> guardiansId, int numberOfTeams);
     }
     
+    /*
+     * This Algorithm is largely informed by this article: https://www.codeproject.com/Articles/13789/Simulated-Annealing-Example-in-C
+     */
     public class MatchMakingService : IMatchMakingService
     {
-        private const double _epsilon = 0.10;
+        private const double _epsilon = 0.1;
         private const double _alpha = 0.999;
         
         private readonly Random _random;
@@ -99,6 +102,7 @@ namespace Destiny.ScrimTracker.Logic.Services
         {
             var temperature = 400.0;
 
+            var propCheckedOut = 0;
             var iterations = 0;
             while (temperature > _epsilon)
             {
@@ -118,19 +122,21 @@ namespace Destiny.ScrimTracker.Logic.Services
                 {
                     teams = KeepNextConfiguration(nextTeamConfiguration);
                 }
-//                else
-//                {
-//                    var probabilityToKeepChange = _random.NextDouble();
-//
-//                    if (probabilityToKeepChange < Math.Exp(-delta / temperature))
-//                    {
-//                        teams = KeepNextConfiguration(nextTeamConfiguration);
-//                    }
-//                }
+                else
+                {
+                    var probabilityToKeepChange = _random.NextDouble();
+                    if (probabilityToKeepChange < Math.Exp(-delta / temperature))
+                    {
+                        propCheckedOut++;
+                        teams = KeepNextConfiguration(nextTeamConfiguration);
+                    }
+                }
                 
                 temperature *= _alpha;
             }
 
+            Console.WriteLine($"Total iterations: {iterations}");
+            Console.WriteLine($"Times probability checked out: {propCheckedOut}");
             return teams;
         }
 
