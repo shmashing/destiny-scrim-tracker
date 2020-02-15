@@ -19,11 +19,19 @@ namespace Destiny.ScrimTracker.Logic.Services
     
     /*
      * This Algorithm is largely informed by this article: https://www.codeproject.com/Articles/13789/Simulated-Annealing-Example-in-C
+     *
+     * Boiler plate: the matchmaking algorithm randomly sorts all the player evenly into teams. It then begins to iterate
+     * randomly swapping two players. If the swap brings the two teams that the players are on, closer in ELO then the
+     * swap is kept.
+     * If the swap is not we still want to allow for more random settling. This'll allow us to find a solution that is closer
+     * to a global minimum rather than a local minimum. We want the probability of accepting a worse trade to diminish as
+     * we iterate and with how much worse the trade is. For example, if the differnce in ELO is not much larger, this
+     * should have a larger chance of being kept.
      */
     public class MatchMakingService : IMatchMakingService
     {
-        private const double _epsilon = 0.1;
-        private const double _alpha = 0.999;
+        private const double _epsilon = 0.1; // This is the final temperature of our solution
+        private const double _alpha = 0.999; // This is the rate at which our solution cools. The closer to 1, the slower it cools.
         
         private readonly Random _random;
         private readonly IGuardianRepository _guardianRepository;
