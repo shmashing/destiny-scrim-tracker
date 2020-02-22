@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 
@@ -9,11 +10,11 @@ namespace Destiny.ScrimTracker.Logic.Services
 {
     public interface IGuardianService
     {
-        string CreateGuardian(Guardian guardian);
-        IEnumerable<GuardianSnapshot> GetGuardians();
+        Task<string> CreateGuardian(Guardian guardian);
+        Task<IEnumerable<GuardianSnapshot>> GetGuardians();
         Guardian GetGuardian(string guardianId);
         Guardian UpdateGuardian(Guardian updatedGuardian);
-        string DeleteGuardian(string guardianId);
+        Task<string> DeleteGuardian(string guardianId);
         IEnumerable<GuardianElo> GetGuardianElo(string guardianId);
         IEnumerable<GuardianEfficiency> GetGuardianEfficiency(string guardianId);
     }
@@ -34,7 +35,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             _matchResultsRepository = matchResultsRepository;
         }
 
-        public string CreateGuardian(Guardian guardian)
+        public async Task<string> CreateGuardian(Guardian guardian)
         {
             var guardianId = _guardianRepository.CreateGuardian(guardian);
 
@@ -56,12 +57,12 @@ namespace Destiny.ScrimTracker.Logic.Services
             };
 
             _guardianEloRepository.UpdateGuardianElo(guardianElo);
-            _guardianEfficiencyRepository.UpdateGuardianEfficiency(guardianEff);
+            await _guardianEfficiencyRepository.UpdateGuardianEfficiency(guardianEff);
             
             return guardianId;
         }
 
-        public IEnumerable<GuardianSnapshot> GetGuardians()
+        public async Task<IEnumerable<GuardianSnapshot>> GetGuardians()
         {
             var guardians = _guardianRepository.GetAllGuardians();
 
@@ -69,7 +70,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             foreach (var guardian in guardians)
             {
                 var guardianElo = _guardianEloRepository.GetGuardianElo(guardian.Id);
-                var guardianEff = _guardianEfficiencyRepository.GetGuardianEfficiency(guardian.Id);
+                var guardianEff = await _guardianEfficiencyRepository.GetGuardianEfficiency(guardian.Id);
                 var guardianSnapshot = new GuardianSnapshot()
                 {
                     Guardian = guardian,
@@ -93,10 +94,10 @@ namespace Destiny.ScrimTracker.Logic.Services
             return _guardianRepository.UpdateGuardianStats(updatedGuardian);
         }
 
-        public string DeleteGuardian(string guardianId)
+        public async Task<string> DeleteGuardian(string guardianId)
         {
             _guardianEloRepository.DeleteGuardianElos(guardianId);
-            _guardianEfficiencyRepository.DeleteGuardianEfficiencies(guardianId);
+            await _guardianEfficiencyRepository.DeleteGuardianEfficiencies(guardianId);
             _matchResultsRepository.DeleteAllResultsForGuardian(guardianId);
             
             return _guardianRepository.DeleteGuardian(guardianId);

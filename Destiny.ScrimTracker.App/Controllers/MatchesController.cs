@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
@@ -32,9 +33,9 @@ namespace Destiny.ScrimTracker.App.Controllers
 
         [Authorize]
         [Route("new")]
-        public IActionResult CreateMatchForm()
+        public async Task<IActionResult> CreateMatchForm()
         {
-            var guardians = _guardianService.GetGuardians();
+            var guardians = await _guardianService.GetGuardians();
             ViewData.Add("Guardians", guardians.OrderBy(g => g.Guardian.GamerTag).Select(g => g.Guardian.GamerTag));
 
             var match = new CreateMatchFormModel();

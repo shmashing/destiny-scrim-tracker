@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 using FluentAssertions;
@@ -14,7 +15,7 @@ namespace Destiny.ScrimTracker.Logic.Services
 {
     public interface IMatchMakingService
     {
-        IEnumerable<MatchMadeTeam> MatchTeams(IEnumerable<string> guardiansId, int numberOfTeams);
+        Task<IEnumerable<MatchMadeTeam>> MatchTeams(IEnumerable<string> guardiansId, int numberOfTeams);
     }
     
     /*
@@ -49,7 +50,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             _guardianEfficiencyRepository = guardianEfficiencyRepository;
         }
         
-        public IEnumerable<MatchMadeTeam> MatchTeams(IEnumerable<string> guardianIds, int teamSize)
+        public async Task<IEnumerable<MatchMadeTeam>> MatchTeams(IEnumerable<string> guardianIds, int teamSize)
         {
             var guardians = new List<GuardianSnapshot>();
 
@@ -57,7 +58,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             {
                 var guardian = _guardianRepository.GetGuardian(id);
                 var guardianElo = _guardianEloRepository.GetGuardianElo(id).NewElo;
-                var guardianEff = _guardianEfficiencyRepository.GetGuardianEfficiency(id).NewEfficiency;
+                var guardianEff = _guardianEfficiencyRepository.GetGuardianEfficiency(id).Result.NewEfficiency;
                 
                 var snapshot = new GuardianSnapshot()
                 {

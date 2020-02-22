@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Services;
@@ -24,9 +25,9 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var guardianSnapshots = _guardianService.GetGuardians();
+            var guardianSnapshots = await _guardianService.GetGuardians();
             return View(guardianSnapshots);
         }
 
