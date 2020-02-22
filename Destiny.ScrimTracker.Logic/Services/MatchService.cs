@@ -184,7 +184,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             double elo = 0;
             foreach (var guardian in guardians)
             {
-                elo += _guardianEloRepository.GetGuardianElo(guardian.Id).NewElo;
+                elo += _guardianEloRepository.GetGuardianElo(guardian.Id).Result.NewElo;
             }
             
             return elo/guardians.Count();

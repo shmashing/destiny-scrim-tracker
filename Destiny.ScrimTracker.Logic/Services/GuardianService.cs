@@ -74,7 +74,7 @@ namespace Destiny.ScrimTracker.Logic.Services
                 var guardianSnapshot = new GuardianSnapshot()
                 {
                     Guardian = guardian,
-                    GuardianElo = guardianElo?.NewElo ?? 1200,
+                    GuardianElo = guardianElo?.Result.NewElo ?? 1200,
                     GuardianEfficiency = guardianEff?.NewEfficiency ?? 0.0,
                 };
 
