@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 
@@ -15,7 +16,7 @@ namespace Destiny.ScrimTracker.Logic.Services
         string CreateMatch(Match match, IEnumerable<MatchTeam> teams);
         IEnumerable<MatchResults> GetMatchResults();
         IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
-        string DeleteMatch(string matchId);
+        Task<string> DeleteMatch(string matchId);
     }
 
     public class MatchService : IMatchService
@@ -108,12 +109,12 @@ namespace Destiny.ScrimTracker.Logic.Services
             return matches;
         }
 
-        public string DeleteMatch(string matchId)
+        public async Task<string> DeleteMatch(string matchId)
         {
-            _matchResultsRepository.DeleteGuardianResults(matchId);
+            await _matchResultsRepository.DeleteGuardianResults(matchId);
             _matchTeamRepository.DeleteTeamsForMatch(matchId);
-            _guardianEfficiencyRepository.DeleteEfficienciesForMatch(matchId);
-            _guardianEloRepository.DeleteEloResultForMatch(matchId);
+            await _guardianEfficiencyRepository.DeleteEfficienciesForMatch(matchId);
+            await _guardianEloRepository.DeleteEloResultForMatch(matchId);
             
             var match = _matchRepository.DeleteMatch(matchId);
             return match;

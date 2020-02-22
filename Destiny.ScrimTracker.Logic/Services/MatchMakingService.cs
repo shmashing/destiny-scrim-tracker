@@ -15,7 +15,7 @@ namespace Destiny.ScrimTracker.Logic.Services
 {
     public interface IMatchMakingService
     {
-        Task<IEnumerable<MatchMadeTeam>> MatchTeams(IEnumerable<string> guardiansId, int numberOfTeams);
+        IEnumerable<MatchMadeTeam> MatchTeams(IEnumerable<string> guardiansId, int numberOfTeams);
     }
     
     /*
@@ -50,7 +50,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             _guardianEfficiencyRepository = guardianEfficiencyRepository;
         }
         
-        public async Task<IEnumerable<MatchMadeTeam>> MatchTeams(IEnumerable<string> guardianIds, int teamSize)
+        public IEnumerable<MatchMadeTeam> MatchTeams(IEnumerable<string> guardianIds, int teamSize)
         {
             var guardians = new List<GuardianSnapshot>();
 
