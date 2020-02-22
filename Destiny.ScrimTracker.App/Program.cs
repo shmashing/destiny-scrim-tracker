@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Destiny.ScrimTracker.Api
+namespace Destiny.ScrimTracker.App
 {
     public class Program
     {

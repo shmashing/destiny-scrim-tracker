@@ -1,0 +1,115 @@
+@using System.IO
+@model Destiny.ScrimTracker.App.Requests.CreateMatchFormModel
+
+@{
+    ViewBag.Title = "Create Match";
+    var guardians = ViewBag.Guardians;
+}
+
+<h2>Add Match</h2>
+@using (Html.BeginForm("FormatRequestAndAddMatch", "Matches", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(req => req.MatchType)
+    </div>
+    <div>
+        @Html.DropDownListFor(req => req.MatchType, Html.GetEnumSelectList<Destiny.ScrimTracker.Logic.Models.MatchType>())
+    </div>
+    
+    <div class="alpha-team table-responsive d-flex">
+        <legend class="teamForm-header">Alpha Team</legend>
+        Team Score: 
+        <input name="Team[0].TeamScore"/>
+        <input name="Team[0].Name" value="Alpha" hidden="true"/>
+        
+        <table class="table  ">
+            <thead>
+            <tr>
+                <th>Guardian</th>
+                <th>Kills</th>
+                <th>Assists</th>
+                <th>Deaths</th>
+            </tr>
+            </thead>
+            <tbody class="alpha-guardian-form">
+            <tr class="alpha-guardian">
+                <td>@Html.DropDownList("Team[0].MatchResults[0].GuardianName", new SelectList(guardians))</td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Kills"/>
+                </td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Assists"/>
+                </td>
+                <td>
+                    <input name="Team[0].MatchResults[0].Deaths"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="addGuardian('alpha')" type="button" class="btn btn-outline-primary btn-sm">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
+        </button>
+    </div>
+    <div></div>
+    <div class="bravo-team table-responsive d-flex">
+        <legend class="teamForm-header">Bravo Team</legend>
+        Team Score: 
+        <input name="Team[1].TeamScore"/>
+        <input name="Team[1].Name" value="Bravo" hidden="true"/>
+        
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Guardian</th>
+                <th>Kills</th>
+                <th>Assists</th>
+                <th>Deaths</th>
+            </tr>
+            </thead>
+            <tbody class="bravo-guardian-form">
+            <tr class="bravo-guardian">
+                <td>@Html.DropDownList("Team[1].MatchResults[0].GuardianName", new SelectList(guardians))</td>
+                <td><input name="Team[1].MatchResults[0].Kills"/></td>
+                <td><input name="Team[1].MatchResults[0].Assists"/></td>
+                <td><input name="Team[1].MatchResults[0].Deaths"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="addGuardian('bravo')" type="button" class="btn btn-outline-primary btn-sm">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Guardian
+        </button>
+    </div>
+    
+    <div class="submitButton">
+        <button type="submit" value="Create Match" class="btn btn-primary">Create Match</button>
+    </div>
+}
+
+<script type="text/javascript">
+function addGuardian(teamName) {
+  var guardianCount = document.getElementsByClassName(teamName+'-guardian').length;
+  
+  console.log('Guardian Count: ' + guardianCount)
+  var newGuardianInput = document.querySelector('.'+teamName+'-guardian').cloneNode(true);
+  var childrenNodes = newGuardianInput.childNodes;
+  for (var i = 0; i < childrenNodes.length; i++)
+  {
+    var grandChildNode = childrenNodes[i].childNodes;
+    
+    for (var j = 0; j < grandChildNode.length; j ++) {
+      var grandChildNodeType = grandChildNode[j].nodeName;
+      
+      if (grandChildNodeType == "INPUT" || grandChildNodeType == "SELECT"){
+        var childName = grandChildNode[j].name;
+        console.log(childName);
+        var newName = childName.replace('MatchResults[0]', 'MatchResults['+guardianCount+']');
+        console.log(newName);
+        grandChildNode[j].setAttribute("name", newName);
+      }
+    }
+  }
+  
+  document.querySelector('.'+teamName+'-guardian-form').appendChild(newGuardianInput);
+}
+
+</script>

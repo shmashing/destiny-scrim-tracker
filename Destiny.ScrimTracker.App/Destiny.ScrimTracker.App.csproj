@@ -18,7 +18,16 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img" />
-    <Folder Include="wwwroot\3rdParty" />
+    <Folder Include="wwwroot\lib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Match\AddMatchView.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Match\CreateMatchForm.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Match\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Guardian\AddGuardianView.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Guardian\Get.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Guardian\GetGuardian.cshtml" />
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">

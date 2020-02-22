@@ -38,6 +38,10 @@ body {
 .ranking:first-child::before {
     content: counter(rowNumber);
 }
+
+.submitButton {
+    margin-top: 3rem;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

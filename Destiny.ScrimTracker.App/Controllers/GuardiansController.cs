@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Destiny.ScrimTracker.Api.Requests;
+﻿using System.Linq;
+using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
-using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -55,7 +48,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
             
             var guardian = request.ToGuardian();
             _guardianService.CreateGuardian(guardian);
-            return Redirect($"/guardians");
+            return Redirect("/guardians");
         }
         
         [HttpGet("{guardianId}")]
@@ -83,8 +76,8 @@ namespace Destiny.ScrimTracker.Api.Controllers
         {
             var guardian = request.ToGuardian(guardianId);
             var updatedGuardian = _guardianService.UpdateGuardian(guardian);
-
-            return Redirect($"/guardians/{updatedGuardian.Id}");
+            
+            return Redirect($"guardians/{updatedGuardian.Id}");
         }
 
         [HttpDelete("{guardianId}")]

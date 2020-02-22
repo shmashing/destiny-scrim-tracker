@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 
-namespace Destiny.ScrimTracker.Api.Requests
+namespace Destiny.ScrimTracker.App.Requests
 {
     public class CreateMatchFormModel
     {

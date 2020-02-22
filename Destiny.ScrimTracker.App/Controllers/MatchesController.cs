@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
-using Destiny.ScrimTracker.Api.Requests;
+using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Destiny.ScrimTracker.Api.Controllers
+namespace Destiny.ScrimTracker.App.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -32,55 +31,39 @@ namespace Destiny.ScrimTracker.Api.Controllers
         }
 
         [Authorize]
-        [Route("match")]
-        public IActionResult AddMatchView()
-        {
-            return View();
-        }
-        
-        [Authorize]
-        [Route("add_match")]
-        public IActionResult CreateMatchForm([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
+        [Route("new")]
+        public IActionResult CreateMatchForm()
         {
             var guardians = _guardianService.GetGuardians();
             ViewData.Add("Guardians", guardians.OrderBy(g => g.Guardian.GamerTag).Select(g => g.Guardian.GamerTag));
-            ViewData.Add("NumberOfTeams", numOfTeams);
-            ViewData.Add("PlayersPerTeam", playersPerTeam);
 
             var match = new CreateMatchFormModel();
-
-            var teams = new List<Team>();
-            for (var i = 0; i < numOfTeams; i++)
-            {
-                teams.Add(new Team());
-                teams[i].MatchResults = new List<MatchResult>();
-                for (var j = 0; j < playersPerTeam; j++)
-                {
-                    teams[i].MatchResults.ToList().Add(new MatchResult());
-                }
-            }
-
-            match.Teams = teams;
             return View(match);
         }
 
         [HttpPost]
         [Authorize]
-        [Route("add_match")]
+        [Route("new")]
         public IActionResult FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
         {
             var createMatchRequest = new CreateMatchRequest();
 
             createMatchRequest.MatchType = Enum.Parse<MatchType>(Request.Form["MatchType"]);
+
+            var formKeys = Request.Form.Keys;
+
+            Console.WriteLine($"Key count: {formKeys.Count()}");
             var teams = new List<MatchTeam>();
-            for (var i = 0; i < numOfTeams; i++)
+            for (var i = 0; i < 2; i++)
             {
                 var team = new MatchTeam();
                 team.Name = Request.Form[$"Team[{i}].Name"];
                 team.TeamScore = int.Parse(Request.Form[$"Team[{i}].TeamScore"]);
-                
+
+                var guardianCount = formKeys.Count(g => g.Contains($"Team[{i}]") && g.Contains("GuardianName"));
+                Console.WriteLine($"Guardians on team: {guardianCount}");
                 var guardianResults = new List<GuardianMatchResult>();
-                for (var j = 0; j < playersPerTeam; j++)
+                for (var j = 0; j < guardianCount; j++)
                 {
                     var results = new GuardianMatchResult
                     {
@@ -90,6 +73,7 @@ namespace Destiny.ScrimTracker.Api.Controllers
                         GuardianName = Request.Form[$"Team[{i}].MatchResults[{j}].GuardianName"]
                     };
 
+                    Console.WriteLine($"Guardian results processed successfully: {results.GuardianName}");
                     if (results.Deaths == 0)
                     {
                         results.Efficiency = results.Kills + results.Assists;
@@ -124,8 +108,8 @@ namespace Destiny.ScrimTracker.Api.Controllers
         [Authorize]
         public IActionResult Delete([FromRoute] string matchId)
         {
-            _matchService.DeleteMatch(matchId);
-            return RedirectToAction("Index");
+            var match = _matchService.DeleteMatch(matchId);
+            return Json(match);
         }
     }
 }

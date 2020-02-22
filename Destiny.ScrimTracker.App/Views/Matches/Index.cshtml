@@ -115,11 +115,11 @@
 <script type="text/javascript">
     function deleteMatch(matchId) {
             $.ajax({
-                url: `/match/${matchId}`,
+                url: `/matches/${matchId}`,
                 type: 'DELETE',
                 success: function(results)
                 {
-                    window.location.href = '/match'
+                    window.location.href = '/matches'
                 }
             })
     }
