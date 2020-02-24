@@ -99,10 +99,10 @@ namespace Destiny.ScrimTracker.App.Controllers
 
         [HttpPost]
         [Authorize]
-        public string Post(CreateMatchRequest request)
+        public async Task<string> Post(CreateMatchRequest request)
         {
             var match = request.ToMatch();
-            return _matchService.CreateMatch(match, request.Teams);
+            return await _matchService.CreateMatch(match, request.Teams);
         }
 
         [HttpDelete("{matchId}")]

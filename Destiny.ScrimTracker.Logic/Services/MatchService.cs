@@ -13,7 +13,7 @@ namespace Destiny.ScrimTracker.Logic.Services
 {
     public interface IMatchService
     {
-        string CreateMatch(Match match, IEnumerable<MatchTeam> teams);
+        Task<string> CreateMatch(Match match, IEnumerable<MatchTeam> teams);
         IEnumerable<MatchResults> GetMatchResults();
         IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
         Task<string> DeleteMatch(string matchId);
@@ -43,7 +43,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             _guardianEfficiencyRepository = guardianEfficiencyRepository;
         }
 
-        public string CreateMatch(Match match, IEnumerable<MatchTeam> teams)
+        public async Task<string> CreateMatch(Match match, IEnumerable<MatchTeam> teams)
         {
             var matchId = _matchRepository.CreateMatch(match);
             var allResults = new List<GuardianMatchResult>();
@@ -57,16 +57,16 @@ namespace Destiny.ScrimTracker.Logic.Services
                     results.Id = $"{ModelIDPrefixes.GuardianMatchResult}_{Guid.NewGuid():N}";
                     results.MatchId = matchId;
                     results.MatchTeamId = team.Id;
-                    results.GuardianId = _guardianRepository.GetGuardianId(results.GuardianName);
+                    results.GuardianId = await _guardianRepository.GetGuardianId(results.GuardianName);
 
-                    _guardianRepository.UpdateGuardianStats(results.GuardianId, results.Kills, results.Deaths);
+                    await _guardianRepository.UpdateGuardianStats(results.GuardianId, results.Kills, results.Deaths);
                     allResults.Add(results);
                 }
             }
 
-            _guardianEfficiencyRepository.UpdateGuardianMatchEfficiency(allResults);
+            await _guardianEfficiencyRepository.UpdateGuardianMatchEfficiency(allResults);
             _matchTeamRepository.WriteMatchTeams(teams);
-            _matchResultsRepository.SaveGuardianResults(allResults);
+            await _matchResultsRepository.SaveGuardianResults(allResults);
 
             var winner = GetWinner(teams);
             var losingTeams = teams.Where(team => team.Id != winner.Id);
@@ -177,7 +177,7 @@ namespace Destiny.ScrimTracker.Logic.Services
 
         private IEnumerable<Guardian> GetGuardiansForTeam(MatchTeam team)
         {
-            return team.GuardianMatchResults.Select(guardianResult => _guardianRepository.GetGuardian(guardianResult.GuardianId)).ToList();
+            return team.GuardianMatchResults.Select(guardianResult => _guardianRepository.GetGuardian(guardianResult.GuardianId).Result);
         }
         
         private double CalculateTeamAverageElo(IEnumerable<Guardian> guardians)

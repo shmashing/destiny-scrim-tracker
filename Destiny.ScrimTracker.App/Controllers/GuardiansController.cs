@@ -53,9 +53,9 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
         
         [HttpGet("{guardianId}")]
-        public IActionResult GetGuardian(string guardianId)
+        public async Task<IActionResult> GetGuardian(string guardianId)
         {
-            var guardian = _guardianService.GetGuardian(guardianId);
+            var guardian = await _guardianService.GetGuardian(guardianId);
             var guardianElo = _guardianService.GetGuardianElo(guardianId);
             var guardianEfficiency = _guardianService.GetGuardianEfficiency(guardianId);
             var matchCount = _matchService.GetMatchResultsForGuardian(guardianId).Count();
