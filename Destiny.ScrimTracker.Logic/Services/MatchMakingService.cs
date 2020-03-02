@@ -58,7 +58,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             {
                 var guardian = await _guardianRepository.GetGuardian(id);
                 var guardianElo = await _guardianEloRepository.GetGuardianElo(id);
-                var guardianEff = await _guardianEfficiencyRepository.GetGuardianEfficiency(id);
+                var guardianEff = _guardianEfficiencyRepository.GetGuardianEfficiency(id);
                 
                 var snapshot = new GuardianSnapshot()
                 {

@@ -12,7 +12,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
 {
     public interface IGuardianEfficiencyRepository
     {
-        Task<GuardianEfficiency> GetGuardianEfficiency(string guardianId);
+        GuardianEfficiency GetGuardianEfficiency(string guardianId);
         IEnumerable<double> GetGuardianEfficiencies(string guardianId);
         IEnumerable<GuardianEfficiency> GetGuardianAverageEfficiencies(string guardianId);
         Task UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency);
@@ -30,10 +30,10 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             _databaseContext = databaseContext;
         }
         
-        public async Task<GuardianEfficiency> GetGuardianEfficiency(string guardianId)
+        public GuardianEfficiency GetGuardianEfficiency(string guardianId)
         {
-            var guardianEfficiency = await _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId)
-                .OrderByDescending(eff => eff.TimeStamp).FirstOrDefaultAsync();
+            var guardianEfficiency = _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId)
+                .OrderByDescending(eff => eff.TimeStamp).FirstOrDefault();
 
             return guardianEfficiency;
         }

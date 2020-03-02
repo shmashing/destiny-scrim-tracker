@@ -69,12 +69,12 @@ namespace Destiny.ScrimTracker.Logic.Services
             var guardianSnapshots = new List<GuardianSnapshot>();
             foreach (var guardian in guardians)
             {
-                var guardianElo = _guardianEloRepository.GetGuardianElo(guardian.Id);
-                var guardianEff = await _guardianEfficiencyRepository.GetGuardianEfficiency(guardian.Id);
+                var guardianElo = await _guardianEloRepository.GetGuardianElo(guardian.Id);
+                var guardianEff = _guardianEfficiencyRepository.GetGuardianEfficiency(guardian.Id);
                 var guardianSnapshot = new GuardianSnapshot()
                 {
                     Guardian = guardian,
-                    GuardianElo = guardianElo?.Result.NewElo ?? 1200,
+                    GuardianElo = guardianElo?.NewElo ?? 1200,
                     GuardianEfficiency = guardianEff?.NewEfficiency ?? 0.0,
                 };
 
