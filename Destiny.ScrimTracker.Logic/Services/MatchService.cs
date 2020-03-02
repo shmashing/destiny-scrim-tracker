@@ -45,7 +45,7 @@ namespace Destiny.ScrimTracker.Logic.Services
 
         public async Task<string> CreateMatch(Match match, IEnumerable<MatchTeam> teams)
         {
-            var matchId = _matchRepository.CreateMatch(match);
+            var matchId = await _matchRepository.CreateMatch(match);
             var allResults = new List<GuardianMatchResult>();
             foreach (var team in teams)
             {
@@ -116,7 +116,7 @@ namespace Destiny.ScrimTracker.Logic.Services
             await _guardianEfficiencyRepository.DeleteEfficienciesForMatch(matchId);
             await _guardianEloRepository.DeleteEloResultForMatch(matchId);
             
-            var match = _matchRepository.DeleteMatch(matchId);
+            var match = await _matchRepository.DeleteMatch(matchId);
             return match;
         }
 

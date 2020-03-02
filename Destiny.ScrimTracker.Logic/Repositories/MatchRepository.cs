@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Destiny.ScrimTracker.Logic.Repositories
 {
     public interface IMatchRepository
     {
-        string CreateMatch(Match match);
+        Task<string> CreateMatch(Match match);
         IEnumerable<Match> GetAllMatches();
         Match GetMatch(string matchId);
-        string DeleteMatch(string matchId);
+        Task<string> DeleteMatch(string matchId);
     }
     
     public class MatchRepository : IMatchRepository
@@ -23,10 +25,10 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             _databaseContext = databaseContext;
         }
         
-        public string CreateMatch(Match match)
+        public async Task<string> CreateMatch(Match match)
         {
-            _databaseContext.Add(match);
-            _databaseContext.SaveChanges();
+            await _databaseContext.AddAsync(match);
+            await _databaseContext.SaveChangesAsync();
 
             return match.Id;
         }
@@ -42,17 +44,12 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             return _databaseContext.Matches.FirstOrDefault(match => match.Id == matchId);
         }
 
-        public string DeleteMatch(string matchId)
+        public async Task<string> DeleteMatch(string matchId)
         {
             var match = _databaseContext.Matches.FirstOrDefault(match => match.Id == matchId);
 
-            if (match == null)
-            {
-                return "Record not found";
-            }
-
             _databaseContext.Remove(match);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return matchId;
         }
