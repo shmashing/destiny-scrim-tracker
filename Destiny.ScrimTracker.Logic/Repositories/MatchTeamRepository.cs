@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Destiny.ScrimTracker.Logic.Repositories
 {
     public interface IMatchTeamRepository
     {
-        IEnumerable<string> WriteMatchTeams(IEnumerable<MatchTeam> matchTeams);
-        IEnumerable<MatchTeam> GetTeamsForMatch(string matchId);
-        IEnumerable<string> DeleteTeamsForMatch(string matchId);
+        Task<IEnumerable<string>> WriteMatchTeams(IEnumerable<MatchTeam> matchTeams);
+        Task<IEnumerable<MatchTeam>> GetTeamsForMatch(string matchId);
+        Task<IEnumerable<string>> DeleteTeamsForMatch(string matchId);
     }
     
     public class MatchTeamRepository : IMatchTeamRepository
@@ -22,25 +24,25 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             _databaseContext = databaseContext;
         }
         
-        public IEnumerable<string> WriteMatchTeams(IEnumerable<MatchTeam> matchTeams)
+        public async Task<IEnumerable<string>> WriteMatchTeams(IEnumerable<MatchTeam> matchTeams)
         {
-            _databaseContext.AddRange(matchTeams);
-            _databaseContext.SaveChanges();
+            await _databaseContext.AddRangeAsync(matchTeams);
+            await _databaseContext.SaveChangesAsync();
 
             return matchTeams.Select(team => team.Id);
         }
 
-        public IEnumerable<MatchTeam> GetTeamsForMatch(string matchId)
+        public async Task<IEnumerable<MatchTeam>> GetTeamsForMatch(string matchId)
         {
-            return _databaseContext.MatchTeams.Where(mt => mt.MatchId == matchId).ToList();
+            return await _databaseContext.MatchTeams.Where(mt => mt.MatchId == matchId).ToListAsync();
         }
 
-        public IEnumerable<string> DeleteTeamsForMatch(string matchId)
+        public async Task<IEnumerable<string>> DeleteTeamsForMatch(string matchId)
         {
             var teams = _databaseContext.MatchTeams.Where(mt => mt.MatchId == matchId);
             
             _databaseContext.RemoveRange(teams);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return teams.Select(t => t.Id);
         }

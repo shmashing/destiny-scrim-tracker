@@ -25,7 +25,8 @@ namespace Destiny.ScrimTracker.App.Controllers
         // GET
         public async Task<IActionResult> Index()
         {
-            var guardians = _guardianService.GetGuardians().Result.OrderBy(g => g.Guardian.GamerTag);
+            var guardiansTask = await _guardianService.GetGuardians();
+            var guardians = guardiansTask.OrderBy(g => g.Guardian.GamerTag);
 
             if (TempData["Error"] != null)
             {

@@ -25,9 +25,9 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
         
         // GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var matchResults = _matchService.GetMatchResults();
+            var matchResults = await _matchService.GetMatchResults();
             return View(matchResults);
         }
 
@@ -45,7 +45,7 @@ namespace Destiny.ScrimTracker.App.Controllers
         [HttpPost]
         [Authorize]
         [Route("new")]
-        public IActionResult FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
+        public async Task<IActionResult> FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
         {
             var createMatchRequest = new CreateMatchRequest();
 
@@ -93,7 +93,7 @@ namespace Destiny.ScrimTracker.App.Controllers
 
             createMatchRequest.Teams = teams;
 
-            _matchService.CreateMatch(createMatchRequest.ToMatch(), createMatchRequest.Teams);
+            await _matchService.CreateMatch(createMatchRequest.ToMatch(), createMatchRequest.Teams);
             return RedirectToAction("Index");
         }
 
@@ -107,9 +107,9 @@ namespace Destiny.ScrimTracker.App.Controllers
 
         [HttpDelete("{matchId}")]
         [Authorize]
-        public IActionResult Delete([FromRoute] string matchId)
+        public async Task<IActionResult> Delete([FromRoute] string matchId)
         {
-            var match = _matchService.DeleteMatch(matchId);
+            var match = await _matchService.DeleteMatch(matchId);
             return Json(match);
         }
     }

@@ -14,7 +14,7 @@ namespace Destiny.ScrimTracker.Logic.Services
     public interface IMatchService
     {
         Task<string> CreateMatch(Match match, IEnumerable<MatchTeam> teams);
-        IEnumerable<MatchResults> GetMatchResults();
+        Task<IEnumerable<MatchResults>> GetMatchResults();
         IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
         Task<string> DeleteMatch(string matchId);
     }
@@ -77,13 +77,13 @@ namespace Destiny.ScrimTracker.Logic.Services
             return matchId;
         }
 
-        public IEnumerable<MatchResults> GetMatchResults()
+        public async Task<IEnumerable<MatchResults>> GetMatchResults()
         {
             var matches = _matchRepository.GetAllMatches();
             var matchResults = new List<MatchResults>();
             foreach (var match in matches)
             {
-                var teams = _matchTeamRepository.GetTeamsForMatch(match.Id);
+                var teams = await _matchTeamRepository.GetTeamsForMatch(match.Id);
 
                 foreach (var team in teams)
                 {
