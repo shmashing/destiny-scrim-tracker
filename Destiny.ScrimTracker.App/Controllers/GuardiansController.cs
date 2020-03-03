@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Services;
@@ -24,9 +25,9 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var guardianSnapshots = _guardianService.GetGuardians();
+            var guardianSnapshots = await _guardianService.GetGuardians();
             return View(guardianSnapshots);
         }
 
@@ -52,9 +53,9 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
         
         [HttpGet("{guardianId}")]
-        public IActionResult GetGuardian(string guardianId)
+        public async Task<IActionResult> GetGuardian(string guardianId)
         {
-            var guardian = _guardianService.GetGuardian(guardianId);
+            var guardian = await _guardianService.GetGuardian(guardianId);
             var guardianElo = _guardianService.GetGuardianElo(guardianId);
             var guardianEfficiency = _guardianService.GetGuardianEfficiency(guardianId);
             var matchCount = _matchService.GetMatchResultsForGuardian(guardianId).Count();
@@ -72,19 +73,19 @@ namespace Destiny.ScrimTracker.App.Controllers
 
         [HttpPut("{guardianId}")]
         [Authorize]
-        public IActionResult Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
+        public async Task<IActionResult> Put(UpdateGuardianRequest request, [FromRoute] string guardianId)
         {
             var guardian = request.ToGuardian(guardianId);
-            var updatedGuardian = _guardianService.UpdateGuardian(guardian);
+            var updatedGuardian = await _guardianService.UpdateGuardian(guardian);
             
             return Redirect($"guardians/{updatedGuardian.Id}");
         }
 
         [HttpDelete("{guardianId}")]
         [Authorize]
-        public IActionResult Delete([FromRoute] string guardianId)
+        public async Task<IActionResult> Delete([FromRoute] string guardianId)
         {
-            var guardian = _guardianService.DeleteGuardian(guardianId);
+            var guardian = await _guardianService.DeleteGuardian(guardianId);
             return Json(guardian);
         }
     }

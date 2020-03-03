@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +23,10 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
         
         // GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var guardians = _guardianService.GetGuardians().OrderBy(g => g.Guardian.GamerTag);
+            var guardiansTask = await _guardianService.GetGuardians();
+            var guardians = guardiansTask.OrderBy(g => g.Guardian.GamerTag);
 
             if (TempData["Error"] != null)
             {
@@ -35,7 +37,7 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
 
         [HttpPost]
-        public IActionResult MatchMake()
+        public async Task<IActionResult> MatchMake()
         {
             var guardianKeys = Request.Form.Keys.Where(k => k.Contains("guardian"));
             var teamSizeIsValidInput = int.TryParse(Request.Form["teamSize"], out var teamSize);
@@ -53,7 +55,7 @@ namespace Destiny.ScrimTracker.App.Controllers
                 return RedirectToAction("Index");
             }
             
-            var teams = _matchMakingService.MatchTeams(guardianIds, teamSize);
+            var teams = await _matchMakingService.MatchTeams(guardianIds, teamSize);
             
             return View(teams);
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.App.Requests;
 using Destiny.ScrimTracker.Logic.Models;
 using Destiny.ScrimTracker.Logic.Repositories;
@@ -24,17 +25,17 @@ namespace Destiny.ScrimTracker.App.Controllers
         }
         
         // GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var matchResults = _matchService.GetMatchResults();
+            var matchResults = await _matchService.GetMatchResults();
             return View(matchResults);
         }
 
         [Authorize]
         [Route("new")]
-        public IActionResult CreateMatchForm()
+        public async Task<IActionResult> CreateMatchForm()
         {
-            var guardians = _guardianService.GetGuardians();
+            var guardians = await _guardianService.GetGuardians();
             ViewData.Add("Guardians", guardians.OrderBy(g => g.Guardian.GamerTag).Select(g => g.Guardian.GamerTag));
 
             var match = new CreateMatchFormModel();
@@ -44,7 +45,7 @@ namespace Destiny.ScrimTracker.App.Controllers
         [HttpPost]
         [Authorize]
         [Route("new")]
-        public IActionResult FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
+        public async Task<IActionResult> FormatRequestAndAddMatch([FromQuery] int numOfTeams, [FromQuery] int playersPerTeam)
         {
             var createMatchRequest = new CreateMatchRequest();
 
@@ -92,23 +93,23 @@ namespace Destiny.ScrimTracker.App.Controllers
 
             createMatchRequest.Teams = teams;
 
-            _matchService.CreateMatch(createMatchRequest.ToMatch(), createMatchRequest.Teams);
+            await _matchService.CreateMatch(createMatchRequest.ToMatch(), createMatchRequest.Teams);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Authorize]
-        public string Post(CreateMatchRequest request)
+        public async Task<string> Post(CreateMatchRequest request)
         {
             var match = request.ToMatch();
-            return _matchService.CreateMatch(match, request.Teams);
+            return await _matchService.CreateMatch(match, request.Teams);
         }
 
         [HttpDelete("{matchId}")]
         [Authorize]
-        public IActionResult Delete([FromRoute] string matchId)
+        public async Task<IActionResult> Delete([FromRoute] string matchId)
         {
-            var match = _matchService.DeleteMatch(matchId);
+            var match = await _matchService.DeleteMatch(matchId);
             return Json(match);
         }
     }

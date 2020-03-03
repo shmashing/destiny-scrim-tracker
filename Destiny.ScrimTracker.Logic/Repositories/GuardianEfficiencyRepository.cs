@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Destiny.ScrimTracker.Logic.Repositories
@@ -13,10 +15,10 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         GuardianEfficiency GetGuardianEfficiency(string guardianId);
         IEnumerable<double> GetGuardianEfficiencies(string guardianId);
         IEnumerable<GuardianEfficiency> GetGuardianAverageEfficiencies(string guardianId);
-        void UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency);
-        void UpdateGuardianMatchEfficiency(IEnumerable<GuardianMatchResult> guardianMatchResults);
-        int DeleteGuardianEfficiencies(string guardianId);
-        IEnumerable<string> DeleteEfficienciesForMatch(string matchId);
+        Task UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency);
+        Task UpdateGuardianMatchEfficiency(IEnumerable<GuardianMatchResult> guardianMatchResults);
+        Task<int> DeleteGuardianEfficiencies(string guardianId);
+        Task<IEnumerable<string>> DeleteEfficienciesForMatch(string matchId);
     }
     
     public class GuardianEfficiencyRepository : IGuardianEfficiencyRepository
@@ -53,13 +55,13 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             return efficiencies;
         }
 
-        public void UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency)
+        public async Task UpdateGuardianEfficiency(GuardianEfficiency guardianEfficiency)
         {
             _databaseContext.Add(guardianEfficiency);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
         }
 
-        public void UpdateGuardianMatchEfficiency(IEnumerable<GuardianMatchResult> guardianMatchResults)
+        public async Task UpdateGuardianMatchEfficiency(IEnumerable<GuardianMatchResult> guardianMatchResults)
         {
             var efficiencyUpdates = new List<GuardianEfficiency>();
             foreach (var result in guardianMatchResults)
@@ -79,24 +81,24 @@ namespace Destiny.ScrimTracker.Logic.Repositories
                 efficiencyUpdates.Add(newGuardianEff);
             }
 
-            _databaseContext.AddRange(efficiencyUpdates);
-            _databaseContext.SaveChanges();
+            await _databaseContext.AddRangeAsync(efficiencyUpdates);
+            await _databaseContext.SaveChangesAsync();
         }
 
-        public int DeleteGuardianEfficiencies(string guardianId)
+        public async Task<int> DeleteGuardianEfficiencies(string guardianId)
         {
             var guardianEfficiencies = _databaseContext.GuardianEfficiencies.Where(eff => eff.GuardianId == guardianId);
 
             _databaseContext.RemoveRange(guardianEfficiencies);
-            return _databaseContext.SaveChanges();
+            return await _databaseContext.SaveChangesAsync();
         }
 
-        public IEnumerable<string> DeleteEfficienciesForMatch(string matchId)
+        public async Task<IEnumerable<string>> DeleteEfficienciesForMatch(string matchId)
         {
             var guardianEfficiencies = _databaseContext.GuardianEfficiencies.Where(eff => eff.MatchId == matchId);
 
             _databaseContext.RemoveRange(guardianEfficiencies);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return guardianEfficiencies.Select(eff => eff.Id);
         }

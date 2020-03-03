@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,14 @@ namespace Destiny.ScrimTracker.Logic.Repositories
 {
     public interface IGuardianRepository
     {
-        string CreateGuardian(Guardian guardian);
-        IEnumerable<Guardian> GetAllGuardians();
-        Guardian GetGuardian(string guardianId);
-        string GetGuardianId(string gamerTag);
-        Guardian UpdateGuardianStats(Guardian updatedGuardian);
-        Guardian UpdateGuardianStats(string guardianId, int kills, int deaths);
-        Guardian UpdateGuardianEloModifier(string guardianId, EloModifier newModifier);
-        string DeleteGuardian(string guardianId);
-        void CalculateGuardianElo(Guardian guardian, bool isWinner);
+        Task<string> CreateGuardian(Guardian guardian);
+        Task<IEnumerable<Guardian>> GetAllGuardians();
+        Task<Guardian> GetGuardian(string guardianId);
+        Task<string> GetGuardianId(string gamerTag);
+        Task<Guardian> UpdateGuardianStats(Guardian updatedGuardian);
+        Task<Guardian> UpdateGuardianStats(string guardianId, int kills, int deaths);
+        Task<Guardian> UpdateGuardianEloModifier(string guardianId, EloModifier newModifier);
+        Task<string> DeleteGuardian(string guardianId); 
     }
     
     public class GuardianRepository : IGuardianRepository
@@ -32,39 +32,40 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             _databaseContext = databaseContext;
         }
 
-        public string CreateGuardian(Guardian guardian)
+        public async Task<string> CreateGuardian(Guardian guardian)
         {
-            _databaseContext.Add(guardian);
-            _databaseContext.SaveChanges();
+            await _databaseContext.AddAsync(guardian);
+            await _databaseContext.SaveChangesAsync();
 
             return guardian.Id;
         }
 
-        public IEnumerable<Guardian> GetAllGuardians()
+        public async Task<IEnumerable<Guardian>> GetAllGuardians()
         {
             
-            var guardians =  _databaseContext.Guardians.ToList();
+            var guardians = await _databaseContext.Guardians.ToListAsync();
             return guardians;
             
         }
 
-        public Guardian GetGuardian(string guardianId)
+        public async Task<Guardian> GetGuardian(string guardianId)
         {
 
-            var guardian = _databaseContext.Guardians.FirstOrDefault(guardian => guardian.Id == guardianId);
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(guardian => guardian.Id == guardianId);
             return guardian;
             
         }
 
-        public string GetGuardianId(string gamerTag)
+        public async Task<string> GetGuardianId(string gamerTag)
         {
-            var guardianId = _databaseContext.Guardians.FirstOrDefault(g => g.GamerTag == gamerTag).Id;
-            return guardianId;
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(g => g.GamerTag == gamerTag);
+            
+            return guardian.Id;
         }
 
-        public Guardian UpdateGuardianStats(Guardian updatedGuardian)
+        public async Task<Guardian> UpdateGuardianStats(Guardian updatedGuardian)
         {
-            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == updatedGuardian.Id);
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(g => g.Id == updatedGuardian.Id);
 
             if (guardian == null)
             {
@@ -75,19 +76,19 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             guardian.LifetimeKills += updatedGuardian.LifetimeKills;
                 
             _databaseContext.Update(guardian);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
             
             return guardian;
         }
 
-        public Guardian UpdateGuardianStats(string guardianId, int kills, int deaths)
+        public async Task<Guardian> UpdateGuardianStats(string guardianId, int kills, int deaths)
         {
-            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(g => g.Id == guardianId);
 
             guardian.LifetimeDeaths += deaths;
             guardian.LifetimeKills += kills;
 
-            var matchCount = _databaseContext.GuardianMatchResults.Count(res => res.GuardianId == guardianId);
+            var matchCount = await _databaseContext.GuardianMatchResults.CountAsync(res => res.GuardianId == guardianId);
 
             if (matchCount >= 30 && guardian.EloModifier == EloModifier.NewGuardian)
             {
@@ -95,26 +96,26 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             }
 
             _databaseContext.Update(guardian);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return guardian;
         }
 
-        public Guardian UpdateGuardianEloModifier(string guardianId, EloModifier newModifier)
+        public async Task<Guardian> UpdateGuardianEloModifier(string guardianId, EloModifier newModifier)
         {
-            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(g => g.Id == guardianId);
 
             guardian.EloModifier = newModifier;
 
             _databaseContext.Update(guardian);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return guardian;
         }
 
-        public string DeleteGuardian(string guardianId)
+        public async Task<string> DeleteGuardian(string guardianId)
         {
-            var guardian = _databaseContext.Guardians.FirstOrDefault(g => g.Id == guardianId);
+            var guardian = await _databaseContext.Guardians.FirstOrDefaultAsync(g => g.Id == guardianId);
 
             if (guardian == null)
             {
@@ -122,14 +123,9 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             }
 
             _databaseContext.Remove(guardian);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return guardianId;
-        }
-
-        public void CalculateGuardianElo(Guardian guardian, bool isWinner)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Models;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -10,11 +11,11 @@ namespace Destiny.ScrimTracker.Logic.Repositories
 {
     public interface IGuardianMatchResultsRepository
     {
-        IEnumerable<string> SaveGuardianResults(IEnumerable<GuardianMatchResult> matchResults);
+        Task<IEnumerable<string>> SaveGuardianResults(IEnumerable<GuardianMatchResult> matchResults);
         IEnumerable<GuardianMatchResult> GetGuardianMatchResults(string matchId, string teamId);
         IEnumerable<GuardianMatchResult> GetMatchResultsForGuardian(string guardianId);
-        IEnumerable<string> DeleteGuardianResults(string matchId);
-        IEnumerable<string> DeleteAllResultsForGuardian(string guardianId);
+        Task<IEnumerable<string>> DeleteGuardianResults(string matchId);
+        Task<IEnumerable<string>> DeleteAllResultsForGuardian(string guardianId);
     }
     
     public class GuardianMatchResultsRepository : IGuardianMatchResultsRepository
@@ -27,10 +28,10 @@ namespace Destiny.ScrimTracker.Logic.Repositories
         }
 
 
-        public IEnumerable<string> SaveGuardianResults(IEnumerable<GuardianMatchResult> matchResults)
+        public async Task<IEnumerable<string>> SaveGuardianResults(IEnumerable<GuardianMatchResult> matchResults)
         {
-            _databaseContext.AddRange(matchResults);
-            _databaseContext.SaveChanges();
+            await _databaseContext.AddRangeAsync(matchResults);
+            await _databaseContext.SaveChangesAsync();
 
             return matchResults.Select(results => results.Id);
         }
@@ -53,17 +54,17 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             return matchResults;
         }
 
-        public IEnumerable<string> DeleteGuardianResults(string matchId)
+        public async Task<IEnumerable<string>> DeleteGuardianResults(string matchId)
         {
             var results = _databaseContext.GuardianMatchResults.Where(gmr => gmr.MatchId == matchId);
             
             _databaseContext.RemoveRange(results);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return results.Select(gmr => gmr.Id);
         }
 
-        public IEnumerable<string> DeleteAllResultsForGuardian(string guardianId)
+        public async Task<IEnumerable<string>> DeleteAllResultsForGuardian(string guardianId)
         {
             var results = _databaseContext.GuardianMatchResults.Where(gmr => gmr.GuardianId == guardianId);
 
@@ -73,7 +74,7 @@ namespace Destiny.ScrimTracker.Logic.Repositories
             }
             
             _databaseContext.RemoveRange(results);
-            _databaseContext.SaveChanges();
+            await _databaseContext.SaveChangesAsync();
 
             return results.Select(gmr => gmr.Id);
         }
