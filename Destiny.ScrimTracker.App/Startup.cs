@@ -42,6 +42,7 @@ namespace Destiny.ScrimTracker.App
             services.AddTransient<IGuardianMatchResultsRepository, GuardianMatchResultsRepository>();
             services.AddTransient<IMatchTeamRepository, MatchTeamRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
+            services.AddTransient<IMatchMakingRepository, MatchMakingRepository>();
             
             // Register Services
             services.AddTransient<IGuardianService, GuardianService>();
