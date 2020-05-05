@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Destiny.ScrimTracker.Logic.Adapters;
 using Destiny.ScrimTracker.Logic.Repositories;
@@ -28,12 +29,20 @@ namespace Destiny.ScrimTracker.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var bungieApiKey = ParseApiKey(Environment.GetEnvironmentVariable("BungieApiKey"));
+            
             // Register Third Party 
             var connectionString = ParseConnection(Environment.GetEnvironmentVariable("DATABASE_URL"));
+            services.AddHttpClient("bungie", client =>
+            {
+                client.BaseAddress = new Uri("https://www.bungie.net/");
+                client.DefaultRequestHeaders.Add("X-API-Key", bungieApiKey);
+            });
             
             // Register Adapters
             services.AddDbContext<DatabaseContext>(options => 
                 options.UseNpgsql(connectionString,b => b.MigrationsAssembly("Destiny.ScrimTracker.App")));
+            services.AddTransient<IBungieApiAdapter, BungieApiAdapter>();
 
             // Register Repositories
             services.AddTransient<IGuardianRepository, GuardianRepository>();
@@ -138,6 +147,11 @@ namespace Destiny.ScrimTracker.App
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private string ParseApiKey(string apiKey)
+        {
+            return string.IsNullOrEmpty(apiKey) ? Configuration.GetValue<string>("BungieApiKey") : apiKey;
         }
 
         private string ParseConnection(string connectionUri)
